@@ -26,7 +26,7 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
   Stream<UsersBlocState> _getUsers() async* {
     yield _loadingState();
     yield await _getUsersUseCase
-        .getUsers(token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2Nlc3NfdXVpZCI6ImM5MDFkYmQ3LWYwMDgtNGNiMy04NTliLThlNzA1NjU3MTgxNCIsImF1dGhvcml6ZWQiOnRydWUsImV4cCI6MTYxODY3MjY2MSwidXNlcl9pZCI6NH0.ZMMJ6VCDG6w6cY4sd9bqrD9SL8n9eQyJGSkYHiDs1zc')
+        .getUsers()
         .then((List<User> users) =>
             UsersBlocState(UsersBlocStatus.Loaded, users: users))
         .catchError(_errorState);

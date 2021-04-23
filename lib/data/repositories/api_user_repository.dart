@@ -14,35 +14,31 @@ class ApiUserRepository implements UserRepository {
   );
 
   @override
-  Future<User> getUser({String? token}) {
+  Future<User> getUser() {
     // TODO: implement getUser
     throw UnimplementedError();
   }
 
   @override
-  Future<List<User>> getUsers({String? token}) async {
-    if (token != null) {
-      final List<UserDto> usersDto = await _userGateWay.getUsers(token);
-      return usersDto.map((UserDto e) => _userFactory.create(e)).toList();
-    } else {
-      throw Exception('Token is required.');
-    }
+  Future<List<User>> getUsers() async {
+    final List<UserDto> usersDto = await _userGateWay.getUsers();
+    return usersDto.map((UserDto e) => _userFactory.create(e)).toList();
   }
 
   @override
-  Future<void> createUser(User user, {String? token}) {
+  Future<void> createUser(User user) {
     // TODO: implement createUser
     throw UnimplementedError();
   }
 
   @override
-  Future<void> updateUser(User user, {String? token}) {
+  Future<void> updateUser(User user) {
     // TODO: implement updateUser
     throw UnimplementedError();
   }
 
   @override
-  Future<void> deleteUser(int id, {String? token}) {
+  Future<void> deleteUser(int id) {
     // TODO: implement deleteUser
     throw UnimplementedError();
   }

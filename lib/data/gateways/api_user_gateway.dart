@@ -1,24 +1,21 @@
-import 'dart:convert';
-
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+
+import 'api_provider.dart';
 
 class ApiUserGateWay {
-  static const String requestURLBody = 'http://localhost:8080/';
+  final ApiProvider _apiProvider;
 
-  Future<List<UserDto>> getUsers(String token) async {
-    final http.Response response = await http.get(
-      Uri.parse(
-        'http://localhost:8080/users',
-      ),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + token,
-      },
-    );
+  ApiUserGateWay(
+    this._apiProvider,
+  );
+
+  Future<List<UserDto>> getUsers() async {
+    final Response<dynamic> response =
+        await _apiProvider.apiProviderGet('users');
 
     if (response.statusCode == 200) {
-      final List<dynamic> data = jsonDecode(response.body) as List<dynamic>;
+      final List<dynamic> data = response.data as List<dynamic>;
       return data
           .map((dynamic e) => UserDto(
                 id: e['user_id'] as int,

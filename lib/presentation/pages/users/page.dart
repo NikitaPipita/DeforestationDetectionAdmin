@@ -1,21 +1,20 @@
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
+import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UsersList extends StatefulWidget {
-  final UsersBloc _usersBloc;
-
   const UsersList({
-    required UsersBloc usersBloc,
     Key? key,
-  })  : _usersBloc = usersBloc,
-        super(key: key);
+  })  : super(key: key);
 
   @override
   _UsersListState createState() => _UsersListState();
 }
 
 class _UsersListState extends State<UsersList> {
+  final UsersBloc _usersBloc = di.sl.get();
+
   List<bool> _tilesCheckState = <bool>[];
 
   void _editElement() {}
@@ -75,7 +74,7 @@ class _UsersListState extends State<UsersList> {
           color: Colors.grey,
         ),
         BlocBuilder<UsersBloc, UsersBlocState>(
-          bloc: widget._usersBloc,
+          bloc: _usersBloc,
           builder: (BuildContext context, UsersBlocState snapshot) {
             if (snapshot.status == UsersBlocStatus.Error) {
               return Center(

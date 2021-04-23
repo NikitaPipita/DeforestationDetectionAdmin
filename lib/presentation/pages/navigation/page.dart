@@ -1,5 +1,4 @@
 import 'package:deforestation_detection_admin/presentation/pages/users/page.dart';
-import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -10,16 +9,10 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = <Widget>[
-    UsersList(
-      usersBloc: di.sl.get(),
-    ),
-    UsersList(
-      usersBloc: di.sl.get(),
-    ),
-    UsersList(
-      usersBloc: di.sl.get(),
-    ),
+  final List<Widget> _pages = const <Widget>[
+    UsersList(),
+    UsersList(),
+    UsersList(),
   ];
 
   @override

@@ -36,7 +36,8 @@ class ApiProvider {
     }
   }
 
-  Future<Response<dynamic>> authentication(String email, String password) async {
+  Future<Response<dynamic>> authentication(
+      String email, String password) async {
     final Response<dynamic> response = await _dio.post<dynamic>(
       'sessions',
       data: <String, dynamic>{
@@ -67,6 +68,62 @@ class ApiProvider {
       await _refreshToken();
       response =
           await _dio.get<dynamic>(path, queryParameters: queryParameters);
+    }
+    return response;
+  }
+
+  Future<Response<dynamic>> apiProviderPost(
+    String path, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Response<dynamic> response = await _dio.post<dynamic>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+    );
+    if (!_isResponseValid(response)) {
+      await _refreshToken();
+      response = await _dio.post<dynamic>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+    }
+    return response;
+  }
+
+  Future<Response<dynamic>> apiProviderPut(
+      String path, {
+        Map<String, dynamic>? data,
+        Map<String, dynamic>? queryParameters,
+      }) async {
+    Response<dynamic> response = await _dio.put<dynamic>(
+      path,
+      data: data,
+      queryParameters: queryParameters,
+    );
+    if (!_isResponseValid(response)) {
+      await _refreshToken();
+      response = await _dio.put<dynamic>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+    }
+    return response;
+  }
+
+  Future<Response<dynamic>> apiProviderDelete(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
+    Response<dynamic> response =
+        await _dio.delete<dynamic>(path, queryParameters: queryParameters);
+    if (!_isResponseValid(response)) {
+      await _refreshToken();
+      response =
+          await _dio.delete<dynamic>(path, queryParameters: queryParameters);
     }
     return response;
   }

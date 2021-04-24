@@ -1,4 +1,5 @@
 import 'package:deforestation_detection_admin/converters/entities/user_from_dto_factory.dart';
+import 'package:deforestation_detection_admin/converters/entities/user_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_authentication_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_provider.dart';
@@ -31,8 +32,9 @@ void init() {
   sl.registerLazySingleton<LoginBloc>(() => LoginBloc(sl.get()));
 
   sl.registerLazySingleton<ApiUserGateWay>(() => ApiUserGateWay(sl.get()));
+  sl.registerLazySingleton<Factory<UserDto, User>>(() => UserToDtoFactory());
   sl.registerLazySingleton<UserRepository>(
-      () => ApiUserRepository(sl.get(), sl.get()));
+      () => ApiUserRepository(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<GetUsersUseCase>(() => ApiGetUsersUseCase(sl.get()));
   sl.registerLazySingleton<UsersBloc>(() => UsersBloc(sl.get()));
 }

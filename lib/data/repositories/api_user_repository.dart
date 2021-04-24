@@ -6,40 +6,39 @@ import 'package:deforestation_detection_admin/domain/repositoies/user_repository
 
 class ApiUserRepository implements UserRepository {
   final ApiUserGateWay _userGateWay;
-  final Factory<User, UserDto> _userFactory;
+  final Factory<User, UserDto> _userFromDtoFactory;
+  final Factory<UserDto, User> _userToDtoFactory;
 
   ApiUserRepository(
     this._userGateWay,
-    this._userFactory,
+    this._userFromDtoFactory,
+    this._userToDtoFactory,
   );
 
   @override
-  Future<User> getUser() {
-    // TODO: implement getUser
-    throw UnimplementedError();
+  Future<User> getUser(int id) async {
+    final UserDto userDto = await _userGateWay.getUser(id);
+    return _userFromDtoFactory.create(userDto);
   }
 
   @override
   Future<List<User>> getUsers() async {
     final List<UserDto> usersDto = await _userGateWay.getUsers();
-    return usersDto.map((UserDto e) => _userFactory.create(e)).toList();
+    return usersDto.map((UserDto e) => _userFromDtoFactory.create(e)).toList();
   }
 
   @override
-  Future<void> createUser(User user) {
-    // TODO: implement createUser
-    throw UnimplementedError();
+  Future<void> createUser(User user) async {
+    final UserDto userDto = _userToDtoFactory.create(user);
+    await _userGateWay.createUser(userDto);
   }
 
   @override
-  Future<void> updateUser(User user) {
-    // TODO: implement updateUser
-    throw UnimplementedError();
+  Future<void> updateUser(User user) async {
+    final UserDto userDto = _userToDtoFactory.create(user);
+    await _userGateWay.updateUser(userDto);
   }
 
   @override
-  Future<void> deleteUser(int id) {
-    // TODO: implement deleteUser
-    throw UnimplementedError();
-  }
+  Future<void> deleteUser(int id) => _userGateWay.deleteUser(id);
 }

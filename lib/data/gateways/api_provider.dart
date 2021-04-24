@@ -36,7 +36,7 @@ class ApiProvider {
     }
   }
 
-  Future<void> authentication(String email, String password) async {
+  Future<Response<dynamic>> authentication(String email, String password) async {
     final Response<dynamic> response = await _dio.post<dynamic>(
       'sessions',
       data: <String, dynamic>{
@@ -51,6 +51,7 @@ class ApiProvider {
         refreshToken: response.data['refresh_token'] as String,
       );
       _addTokenToDio(_jsonWebTokenDto!.accessToken);
+      return response;
     } else {
       throw Exception('Failed to authenticate user.');
     }

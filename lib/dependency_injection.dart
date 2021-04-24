@@ -1,6 +1,6 @@
 import 'package:deforestation_detection_admin/converters/entities/user_from_dto_factory.dart';
 import 'package:deforestation_detection_admin/converters/factory.dart';
-import 'package:deforestation_detection_admin/data/gateways/api_jwt_gateway.dart';
+import 'package:deforestation_detection_admin/data/gateways/api_authentication_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_provider.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_user_gateway.dart';
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
@@ -21,13 +21,15 @@ final GetIt sl = GetIt.instance;
 void init() {
   sl.registerLazySingleton<ApiProvider>(() => ApiProvider());
 
+  sl.registerLazySingleton<Factory<User, UserDto>>(() => UserFromDtoFactory());
+
   sl.registerLazySingleton<ApiAuthenticationGateWay>(
       () => ApiAuthenticationGateWay(sl.get()));
-  sl.registerLazySingleton<LoginService>(() => ApiLoginService(sl.get()));
+  sl.registerLazySingleton<LoginService>(
+      () => ApiLoginService(sl.get(), sl.get()));
   sl.registerLazySingleton<LoginUseCase>(() => ApiLoginUseCase(sl.get()));
   sl.registerLazySingleton<LoginBloc>(() => LoginBloc(sl.get()));
 
-  sl.registerLazySingleton<Factory<User, UserDto>>(() => UserFromDtoFactory());
   sl.registerLazySingleton<ApiUserGateWay>(() => ApiUserGateWay(sl.get()));
   sl.registerLazySingleton<UserRepository>(
       () => ApiUserRepository(sl.get(), sl.get()));

@@ -64,7 +64,7 @@ class ApiProvider {
   }) async {
     Response<dynamic> response =
         await _dio.get<dynamic>(path, queryParameters: queryParameters);
-    if (!_isResponseValid(response)) {
+    if (_isResponseValid(response)) {
       await _refreshToken();
       response =
           await _dio.get<dynamic>(path, queryParameters: queryParameters);
@@ -82,7 +82,7 @@ class ApiProvider {
       data: data,
       queryParameters: queryParameters,
     );
-    if (!_isResponseValid(response)) {
+    if (_isResponseValid(response)) {
       await _refreshToken();
       response = await _dio.post<dynamic>(
         path,
@@ -103,7 +103,7 @@ class ApiProvider {
       data: data,
       queryParameters: queryParameters,
     );
-    if (!_isResponseValid(response)) {
+    if (_isResponseValid(response)) {
       await _refreshToken();
       response = await _dio.put<dynamic>(
         path,
@@ -120,7 +120,7 @@ class ApiProvider {
   }) async {
     Response<dynamic> response =
         await _dio.delete<dynamic>(path, queryParameters: queryParameters);
-    if (!_isResponseValid(response)) {
+    if (_isResponseValid(response)) {
       await _refreshToken();
       response =
           await _dio.delete<dynamic>(path, queryParameters: queryParameters);

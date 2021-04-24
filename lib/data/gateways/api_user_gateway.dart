@@ -64,7 +64,7 @@ class ApiUserGateWay {
 
   Future<void> updateUser(UserDto userDto) async {
     final Response<dynamic> response = await _apiProvider.apiProviderPut(
-      'users/' + userDto.id.toString(),
+      'user/' + userDto.id.toString(),
       data: <String, dynamic>{
         'email': userDto.email,
         'user_role': userDto.role,
@@ -79,7 +79,7 @@ class ApiUserGateWay {
 
   Future<void> deleteUser(int id) async {
     final Response<dynamic> response = await _apiProvider.apiProviderDelete(
-      'users/' + id.toString(),
+      'user/' + id.toString(),
     );
 
     if (response.statusCode != 204) {

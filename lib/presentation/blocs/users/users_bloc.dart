@@ -51,10 +51,7 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
         UsersBlocStatus.OperationSuccess,
         users: state.users,
       );
-      yield UsersBlocState(
-        UsersBlocStatus.Loaded,
-        users: state.users,
-      );
+      add(const UsersBlocEvent.getUsers());
     } on Exception catch (e) {
       yield _errorState(e);
     }
@@ -67,10 +64,7 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
         UsersBlocStatus.OperationSuccess,
         users: state.users,
       );
-      yield UsersBlocState(
-        UsersBlocStatus.Loaded,
-        users: state.users,
-      );
+      add(const UsersBlocEvent.getUsers());
     } on Exception catch (e) {
       yield _errorState(e);
     }
@@ -85,10 +79,7 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
         UsersBlocStatus.OperationSuccess,
         users: state.users,
       );
-      yield UsersBlocState(
-        UsersBlocStatus.Loaded,
-        users: state.users,
-      );
+      add(const UsersBlocEvent.getUsers());
     } on Exception catch (e) {
       yield _errorState(e);
     }

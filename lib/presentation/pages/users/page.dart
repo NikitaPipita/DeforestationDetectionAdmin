@@ -1,25 +1,24 @@
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
+import 'package:deforestation_detection_admin/presentation/pages/users/components/user_edit_button.dart';
+import 'package:deforestation_detection_admin/presentation/pages/users/components/users_delete_button.dart';
+import 'package:deforestation_detection_admin/presentation/pages/users/components/users_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class UsersList extends StatefulWidget {
-  const UsersList({
-    Key? key,
-  })  : super(key: key);
-
+class UsersPage extends StatefulWidget {
   @override
-  _UsersListState createState() => _UsersListState();
+  _UsersPageState createState() => _UsersPageState();
 }
 
-class _UsersListState extends State<UsersList> {
+class _UsersPageState extends State<UsersPage> {
   final UsersBloc _usersBloc = di.sl.get();
 
+  final GlobalKey<UserEditButtonState> _editButtonKey =
+      GlobalKey<UserEditButtonState>();
+  final GlobalKey<UserDeleteButtonState> _deleteButtonKey =
+      GlobalKey<UserDeleteButtonState>();
   List<bool> _tilesCheckState = <bool>[];
-
-  void _editElement() {}
-
-  void _deleteElement() {}
 
   @override
   Widget build(BuildContext context) {
@@ -45,25 +44,16 @@ class _UsersListState extends State<UsersList> {
               const SizedBox(
                 width: 15.0,
               ),
-              OutlinedButton(
-                child: const Text(
-                  'Edit',
-                ),
-                onPressed:
-                    _tilesCheckState.contains(true) ? _editElement : null,
+              UserEditButton(
+                key: _editButtonKey,
+                editElement: () {},
               ),
               const SizedBox(
                 width: 15.0,
               ),
-              OutlinedButton(
-                child: Text(
-                  'Delete',
-                  style: TextStyle(
-                    color: _tilesCheckState.contains(true) ? Colors.red : null,
-                  ),
-                ),
-                onPressed:
-                    _tilesCheckState.contains(true) ? _deleteElement : null,
+              UserDeleteButton(
+                key: _deleteButtonKey,
+                deleteElements: () {},
               ),
             ],
           ),
@@ -89,27 +79,18 @@ class _UsersListState extends State<UsersList> {
             }
             _tilesCheckState = List<bool>.generate(
                 snapshot.users!.length, (int index) => false);
-            return ListView.builder(
-              shrinkWrap: true,
-              itemCount: snapshot.users!.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CheckboxListTile(
-                  value: _tilesCheckState[index],
-                  onChanged: (bool? isChecked) {
-                    if (isChecked != null) {
-                      setState(() {
-                        _tilesCheckState[index] = isChecked;
-                      });
-                    }
-                  },
-                  controlAffinity: ListTileControlAffinity.leading,
-                  title: Text(
-                    snapshot.users![index].email,
-                  ),
-                  subtitle: Text(
-                    snapshot.users![index].role,
-                  ),
-                );
+            return UsersList(
+              usersInfo: snapshot.users!,
+              tilesCheckState: _tilesCheckState,
+              tileCheckCallback: (int index, bool isChecked) {
+                _tilesCheckState[index] = isChecked;
+                if (_tilesCheckState.contains(true)) {
+                  _editButtonKey.currentState!.setActiveState(true);
+                  _deleteButtonKey.currentState!.setActiveState(true);
+                } else {
+                  _editButtonKey.currentState!.setActiveState(false);
+                  _deleteButtonKey.currentState!.setActiveState(false);
+                }
               },
             );
           },

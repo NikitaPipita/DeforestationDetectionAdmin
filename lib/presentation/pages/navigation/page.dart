@@ -9,10 +9,10 @@ class NavigationPage extends StatefulWidget {
 class _NavigationPageState extends State<NavigationPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const <Widget>[
-    UsersList(),
-    UsersList(),
-    UsersList(),
+  final List<Widget> _pages = <Widget>[
+    UsersPage(),
+    UsersPage(),
+    UsersPage(),
   ];
 
   @override

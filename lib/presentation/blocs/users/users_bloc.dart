@@ -1,5 +1,8 @@
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/user/create_user_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/user/delete_user_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/get_users_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/user/update_user_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter/foundation.dart';
@@ -11,9 +14,15 @@ part 'users_bloc.freezed.dart';
 
 class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
   final GetUsersUseCase _getUsersUseCase;
+  final CreateUserUseCase _createUserUseCase;
+  final UpdateUserUseCase _updateUserUseCase;
+  final DeleteUserUseCase _deleteUserUseCase;
 
   UsersBloc(
     this._getUsersUseCase,
+    this._createUserUseCase,
+    this._updateUserUseCase,
+    this._deleteUserUseCase,
   ) : super(const UsersBlocState(UsersBlocStatus.Loading)) {
     add(const GetUsersEvent());
   }
@@ -21,6 +30,9 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
   @override
   Stream<UsersBlocState> mapEventToState(UsersBlocEvent event) => event.when(
         getUsers: _getUsers,
+        createUser: _createUser,
+        updateUser: _updateUser,
+        deleteUsers: _deleteUsers,
       );
 
   Stream<UsersBlocState> _getUsers() async* {
@@ -30,6 +42,56 @@ class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
         .then((List<User> users) =>
             UsersBlocState(UsersBlocStatus.Loaded, users: users))
         .catchError(_errorState);
+  }
+
+  Stream<UsersBlocState> _createUser(User user) async* {
+    try {
+      await _createUserUseCase.createUser(user);
+      yield UsersBlocState(
+        UsersBlocStatus.OperationSuccess,
+        users: state.users,
+      );
+      yield UsersBlocState(
+        UsersBlocStatus.Loaded,
+        users: state.users,
+      );
+    } on Exception catch (e) {
+      yield _errorState(e);
+    }
+  }
+
+  Stream<UsersBlocState> _updateUser(User user) async* {
+    try {
+      await _updateUserUseCase.updateUser(user);
+      yield UsersBlocState(
+        UsersBlocStatus.OperationSuccess,
+        users: state.users,
+      );
+      yield UsersBlocState(
+        UsersBlocStatus.Loaded,
+        users: state.users,
+      );
+    } on Exception catch (e) {
+      yield _errorState(e);
+    }
+  }
+
+  Stream<UsersBlocState> _deleteUsers(List<int> ids) async* {
+    try {
+      for (int i = 0; i < ids.length; i++) {
+        await _deleteUserUseCase.deleteUser(ids[i]);
+      }
+      yield UsersBlocState(
+        UsersBlocStatus.OperationSuccess,
+        users: state.users,
+      );
+      yield UsersBlocState(
+        UsersBlocStatus.Loaded,
+        users: state.users,
+      );
+    } on Exception catch (e) {
+      yield _errorState(e);
+    }
   }
 
   UsersBlocState _loadingState() => UsersBlocState(

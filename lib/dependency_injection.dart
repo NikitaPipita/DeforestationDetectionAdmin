@@ -10,7 +10,10 @@ import 'package:deforestation_detection_admin/data/services/api_login_service.da
 import 'package:deforestation_detection_admin/domain/repositoies/user_repository.dart';
 import 'package:deforestation_detection_admin/domain/services/login_service.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/login/login_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/user/create_user_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/user/delete_user_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/get_users_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/user/update_user_use_case.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/login/login_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -36,5 +39,12 @@ void init() {
   sl.registerLazySingleton<UserRepository>(
       () => ApiUserRepository(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<GetUsersUseCase>(() => ApiGetUsersUseCase(sl.get()));
-  sl.registerLazySingleton<UsersBloc>(() => UsersBloc(sl.get()));
+  sl.registerLazySingleton<CreateUserUseCase>(
+      () => ApiCreateUserUseCase(sl.get()));
+  sl.registerLazySingleton<UpdateUserUseCase>(
+      () => ApiUpdateUserUseCase(sl.get()));
+  sl.registerLazySingleton<DeleteUserUseCase>(
+      () => ApiDeleteUserUseCase(sl.get()));
+  sl.registerLazySingleton<UsersBloc>(
+      () => UsersBloc(sl.get(), sl.get(), sl.get(), sl.get()));
 }

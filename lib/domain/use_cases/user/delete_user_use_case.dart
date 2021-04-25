@@ -1,4 +1,4 @@
-import 'package:deforestation_detection_admin/domain/repositoies/user_repository.dart';
+import 'package:deforestation_detection_admin/domain/repositories/user_repository.dart';
 
 abstract class DeleteUserUseCase {
   Future<void> deleteUser(int id);

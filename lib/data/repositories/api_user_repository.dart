@@ -2,7 +2,7 @@ import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_user_gateway.dart';
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
-import 'package:deforestation_detection_admin/domain/repositoies/user_repository.dart';
+import 'package:deforestation_detection_admin/domain/repositories/user_repository.dart';
 
 class ApiUserRepository implements UserRepository {
   final ApiUserGateWay _userGateWay;

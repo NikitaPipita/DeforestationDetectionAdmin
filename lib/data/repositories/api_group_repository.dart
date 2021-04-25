@@ -2,7 +2,7 @@ import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_group_gateway.dart';
 import 'package:deforestation_detection_admin/data/models/group_dto.dart';
 import 'package:deforestation_detection_admin/domain/entities/group.dart';
-import 'package:deforestation_detection_admin/domain/repositoies/group_repository.dart';
+import 'package:deforestation_detection_admin/domain/repositories/group_repository.dart';
 
 class ApiGroupRepository implements GroupRepository {
   final ApiGroupGateWay _apiGroupGateWay;

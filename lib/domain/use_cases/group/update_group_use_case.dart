@@ -1,5 +1,5 @@
 import 'package:deforestation_detection_admin/domain/entities/group.dart';
-import 'package:deforestation_detection_admin/domain/repositoies/group_repository.dart';
+import 'package:deforestation_detection_admin/domain/repositories/group_repository.dart';
 
 abstract class UpdateGroupUseCase {
   Future<void> updateGroup(Group group);

@@ -28,16 +28,12 @@ class ApiUserRepository implements UserRepository {
   }
 
   @override
-  Future<void> createUser(User user) async {
-    final UserDto userDto = _userToDtoFactory.create(user);
-    await _userGateWay.createUser(userDto);
-  }
+  Future<void> createUser(User user) =>
+      _userGateWay.createUser(_userToDtoFactory.create(user));
 
   @override
-  Future<void> updateUser(User user) async {
-    final UserDto userDto = _userToDtoFactory.create(user);
-    await _userGateWay.updateUser(userDto);
-  }
+  Future<void> updateUser(User user) =>
+      _userGateWay.updateUser(_userToDtoFactory.create(user));
 
   @override
   Future<void> deleteUser(int id) => _userGateWay.deleteUser(id);

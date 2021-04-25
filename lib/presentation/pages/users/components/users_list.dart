@@ -40,10 +40,10 @@ class _UsersListState extends State<UsersList> {
           },
           controlAffinity: ListTileControlAffinity.leading,
           title: Text(
-            widget._usersInfo[index].email,
+            widget._usersInfo[index].email!,
           ),
           subtitle: Text(
-            widget._usersInfo[index].role,
+            widget._usersInfo[index].role!,
           ),
         );
       },

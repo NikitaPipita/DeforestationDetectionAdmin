@@ -50,10 +50,10 @@ class ApiUserGateWay {
     final Response<dynamic> response = await _apiProvider.apiProviderPost(
       'users',
       data: <String, dynamic>{
-        'email': userDto.email,
-        'password': userDto.password,
-        'user_role': userDto.role,
-        'full_name': userDto.fullName,
+        'email': userDto.email!,
+        'password': userDto.password!,
+        'user_role': userDto.role!,
+        'full_name': userDto.fullName!,
       },
     );
 
@@ -66,9 +66,9 @@ class ApiUserGateWay {
     final Response<dynamic> response = await _apiProvider.apiProviderPut(
       'user/' + userDto.id.toString(),
       data: <String, dynamic>{
-        'email': userDto.email,
-        'user_role': userDto.role,
-        'full_name': userDto.fullName,
+        'email': userDto.email!,
+        'user_role': userDto.role!,
+        'full_name': userDto.fullName!,
       },
     );
 

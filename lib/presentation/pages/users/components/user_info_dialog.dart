@@ -69,9 +69,9 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
   @override
   void initState() {
     if (widget._user != null) {
-      _emailController.text = widget._user!.email;
-      _fullNameController.text = widget._user!.fullName;
-      _role = widget._user!.role;
+      _emailController.text = widget._user!.email!;
+      _fullNameController.text = widget._user!.fullName!;
+      _role = widget._user!.role!;
     }
     super.initState();
   }

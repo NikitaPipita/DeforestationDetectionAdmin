@@ -15,7 +15,7 @@ class GroupFromDtoFactory implements Factory<Group, GroupDto> {
   Group create(GroupDto arg) {
     return Group(
       id: arg.id,
-      user: _userFactory.create(arg.userDto),
+      user: _userFactory.create(arg.userDto ?? UserDto()),
       updateDurationSeconds: arg.updateDurationSeconds,
       lastIotChangesTimeUnix: arg.lastIotChangesTimeUnix,
     );

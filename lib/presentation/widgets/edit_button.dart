@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UserEditButton extends StatefulWidget {
-  const UserEditButton({
+class EditButton extends StatefulWidget {
+  const EditButton({
     required Function() editElement,
     Key? key,
   })  : _editElement = editElement,
@@ -10,10 +10,10 @@ class UserEditButton extends StatefulWidget {
   final Function() _editElement;
 
   @override
-  UserEditButtonState createState() => UserEditButtonState();
+  EditButtonState createState() => EditButtonState();
 }
 
-class UserEditButtonState extends State<UserEditButton> {
+class EditButtonState extends State<EditButton> {
   bool _isActive = false;
 
   void setActiveState(bool isActive) {

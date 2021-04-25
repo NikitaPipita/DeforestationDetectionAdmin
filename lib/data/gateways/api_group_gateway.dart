@@ -20,9 +20,9 @@ class ApiGroupGateWay {
       return data.map((dynamic groupData) {
         final dynamic userData = groupData['user'];
         final UserDto userDto = UserDto(
-          id: userData['id'] as int,
+          id: userData['user_id'] as int,
           email: userData['email'] as String,
-          role: userData['role'] as String,
+          role: userData['user_role'] as String,
           fullName: userData['full_name'] as String,
         );
         return GroupDto(
@@ -46,9 +46,9 @@ class ApiGroupGateWay {
     if (response.statusCode == 200) {
       final dynamic userData = response.data['user'];
       final UserDto userDto = UserDto(
-        id: userData['id'] as int,
+        id: userData['user_id'] as int,
         email: userData['email'] as String,
-        role: userData['role'] as String,
+        role: userData['user_role'] as String,
         fullName: userData['full_name'] as String,
       );
       return GroupDto(

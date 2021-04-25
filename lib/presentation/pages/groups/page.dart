@@ -1,63 +1,63 @@
-import 'package:deforestation_detection_admin/domain/entities/user.dart';
-import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
+import 'package:deforestation_detection_admin/domain/entities/group.dart';
+import 'package:deforestation_detection_admin/presentation/blocs/groups/groups_bloc.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
-import 'package:deforestation_detection_admin/presentation/pages/users/components/users_list.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/delete_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/edit_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/success_operation_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'components/user_info_dialog.dart';
+import 'components/group_info_dialog.dart';
+import 'components/groups_list.dart';
 
-class UsersPage extends StatefulWidget {
+class GroupsPage extends StatefulWidget {
   @override
-  _UsersPageState createState() => _UsersPageState();
+  _GroupsPageState createState() => _GroupsPageState();
 }
 
-class _UsersPageState extends State<UsersPage> {
-  final UsersBloc _usersBloc = di.sl.get();
+class _GroupsPageState extends State<GroupsPage> {
+  final GroupsBloc _groupsBloc = di.sl.get();
 
   final GlobalKey<EditButtonState> _editButtonKey =
       GlobalKey<EditButtonState>();
   final GlobalKey<DeleteButtonState> _deleteButtonKey =
       GlobalKey<DeleteButtonState>();
-  List<User> _users = <User>[];
+  List<Group> _groups = <Group>[];
   List<bool> _tilesCheckState = <bool>[];
 
-  void _addUserDialog() {
+  void _addGroupDialog() {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return UserInfoDialog(
-          callback: (User user) {
+        return GroupInfoDialog(
+          callback: (Group group) {
             _editButtonKey.currentState!.setActiveState(false);
             _deleteButtonKey.currentState!.setActiveState(false);
-            _usersBloc.add(UsersBlocEvent.createUser(user));
+            _groupsBloc.add(GroupsBlocEvent.createGroup(group));
           },
         );
       },
     );
   }
 
-  void _editUserDialog() {
-    User? user;
+  void _editGroupDialog() {
+    Group? group;
     for (int i = 0; i < _tilesCheckState.length; i++) {
       if (_tilesCheckState[i]) {
-        user = _users[i];
+        group = _groups[i];
         break;
       }
     }
-    if (user != null) {
+    if (group != null) {
       showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return UserInfoDialog(
-            user: user,
-            callback: (User user) {
+          return GroupInfoDialog(
+            group: group,
+            callback: (Group group) {
               _editButtonKey.currentState!.setActiveState(false);
               _deleteButtonKey.currentState!.setActiveState(false);
-              _usersBloc.add(UsersBlocEvent.updateUser(user));
+              _groupsBloc.add(GroupsBlocEvent.updateGroup(group));
             },
           );
         },
@@ -69,26 +69,26 @@ class _UsersPageState extends State<UsersPage> {
     final List<int> ids = <int>[];
     for (int i = 0; i < _tilesCheckState.length; i++) {
       if (_tilesCheckState[i]) {
-        ids.add(_users[i].id!);
+        ids.add(_groups[i].id!);
       }
     }
     if (ids.isNotEmpty) {
       _editButtonKey.currentState!.setActiveState(false);
       _deleteButtonKey.currentState!.setActiveState(false);
-      _usersBloc.add(UsersBlocEvent.deleteUsers(ids));
+      _groupsBloc.add(GroupsBlocEvent.deleteGroups(ids));
     }
   }
 
-  void _loadUsers() {
-    _usersBloc.add(const UsersBlocEvent.getUsers());
+  void _loadGroups() {
+    _groupsBloc.add(const GroupsBlocEvent.getGroups());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<UsersBloc, UsersBlocState>(
-      bloc: _usersBloc,
-      listener: (BuildContext context, UsersBlocState snapshot) {
-        if (snapshot.status == UsersBlocStatus.OperationSuccess) {
+    return BlocListener<GroupsBloc, GroupsBlocState>(
+      bloc: _groupsBloc,
+      listener: (BuildContext context, GroupsBlocState snapshot) {
+        if (snapshot.status == GroupsBlocStatus.OperationSuccess) {
           showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -111,7 +111,7 @@ class _UsersPageState extends State<UsersPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 OutlinedButton(
-                  onPressed: _addUserDialog,
+                  onPressed: _addGroupDialog,
                   child: const Text(
                     'Add',
                   ),
@@ -121,7 +121,7 @@ class _UsersPageState extends State<UsersPage> {
                 ),
                 EditButton(
                   key: _editButtonKey,
-                  editElement: _editUserDialog,
+                  editElement: _editGroupDialog,
                 ),
                 const SizedBox(
                   width: 15.0,
@@ -137,7 +137,7 @@ class _UsersPageState extends State<UsersPage> {
                   icon: const Icon(
                     Icons.update,
                   ),
-                  onPressed: _loadUsers,
+                  onPressed: _loadGroups,
                 ),
               ],
             ),
@@ -147,25 +147,25 @@ class _UsersPageState extends State<UsersPage> {
             width: double.infinity,
             color: Colors.grey,
           ),
-          BlocBuilder<UsersBloc, UsersBlocState>(
-            bloc: _usersBloc,
-            builder: (BuildContext context, UsersBlocState snapshot) {
-              if (snapshot.status == UsersBlocStatus.Error) {
+          BlocBuilder<GroupsBloc, GroupsBlocState>(
+            bloc: _groupsBloc,
+            builder: (BuildContext context, GroupsBlocState snapshot) {
+              if (snapshot.status == GroupsBlocStatus.Error) {
                 return Center(
                   child: Text(
                     snapshot.error.toString(),
                   ),
                 );
-              } else if (snapshot.status == UsersBlocStatus.Loading) {
+              } else if (snapshot.status == GroupsBlocStatus.Loading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              _users = snapshot.users!;
+              _groups = snapshot.groups!;
               _tilesCheckState = List<bool>.generate(
-                  snapshot.users!.length, (int index) => false);
-              return UsersList(
-                usersInfo: snapshot.users!,
+                  snapshot.groups!.length, (int index) => false);
+              return GroupsList(
+                groupsInfo: snapshot.groups!,
                 tilesCheckState: _tilesCheckState,
                 tileCheckCallback: (int index, bool isChecked) {
                   _tilesCheckState[index] = isChecked;

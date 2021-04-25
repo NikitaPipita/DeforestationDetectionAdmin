@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class UserDeleteButton extends StatefulWidget {
-  const UserDeleteButton({
+class DeleteButton extends StatefulWidget {
+  const DeleteButton({
     required Function() deleteElements,
     Key? key,
   })  : _deleteElements = deleteElements,
@@ -10,10 +10,10 @@ class UserDeleteButton extends StatefulWidget {
   final Function() _deleteElements;
 
   @override
-  UserDeleteButtonState createState() => UserDeleteButtonState();
+  DeleteButtonState createState() => DeleteButtonState();
 }
 
-class UserDeleteButtonState extends State<UserDeleteButton> {
+class DeleteButtonState extends State<DeleteButton> {
   bool _isActive = false;
 
   void setActiveState(bool isActive) {

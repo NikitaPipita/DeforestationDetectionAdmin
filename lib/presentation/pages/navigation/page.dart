@@ -1,3 +1,4 @@
+import 'package:deforestation_detection_admin/presentation/pages/groups/page.dart';
 import 'package:deforestation_detection_admin/presentation/pages/users/page.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +12,7 @@ class _NavigationPageState extends State<NavigationPage> {
 
   final List<Widget> _pages = <Widget>[
     UsersPage(),
-    UsersPage(),
+    GroupsPage(),
     UsersPage(),
   ];
 

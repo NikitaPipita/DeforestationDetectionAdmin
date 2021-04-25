@@ -139,16 +139,19 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
                 ),
                 validator: _fullNameValidator,
               ),
-              DropdownButton<String>(
-                items: _menuItems,
-                value: _role,
-                onChanged: (String? value) {
-                  if (value != null) {
-                    setState(() {
-                      _role = value;
-                    });
-                  }
-                },
+              Align(
+                alignment: Alignment.centerLeft,
+                child: DropdownButton<String>(
+                  items: _menuItems,
+                  value: _role,
+                  onChanged: (String? value) {
+                    if (value != null) {
+                      setState(() {
+                        _role = value;
+                      });
+                    }
+                  },
+                ),
               ),
             ],
           ),

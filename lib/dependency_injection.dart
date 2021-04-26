@@ -1,7 +1,7 @@
 import 'package:deforestation_detection_admin/converters/entities/group_from_dto_factory.dart';
-import 'package:deforestation_detection_admin/converters/entities/group_to_dto_factory.dart';
+import 'file:///C:/Users/Admin/Desktop/deforestation_detection_admin/deforestation_detection_admin/lib/converters/models/group_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/converters/entities/user_from_dto_factory.dart';
-import 'package:deforestation_detection_admin/converters/entities/user_to_dto_factory.dart';
+import 'file:///C:/Users/Admin/Desktop/deforestation_detection_admin/deforestation_detection_admin/lib/converters/models/user_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_authentication_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_group_gateway.dart';

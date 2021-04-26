@@ -19,28 +19,28 @@ class GroupsBloc extends Bloc<GroupsBlocEvent, GroupsBlocState> {
   final DeleteGroupUseCase _deleteGroupUseCase;
 
   GroupsBloc(
-      this._getGroupsUseCase,
-      this._createGroupUseCase,
-      this._updateGroupUseCase,
-      this._deleteGroupUseCase,
-      ) : super(const GroupsBlocState(GroupsBlocStatus.Loading)) {
+    this._getGroupsUseCase,
+    this._createGroupUseCase,
+    this._updateGroupUseCase,
+    this._deleteGroupUseCase,
+  ) : super(const GroupsBlocState(GroupsBlocStatus.Loading)) {
     add(const GetGroupsEvent());
   }
 
   @override
   Stream<GroupsBlocState> mapEventToState(GroupsBlocEvent event) => event.when(
-    getGroups: _getGroups,
-    createGroup: _createGroup,
-    updateGroup: _updateGroup,
-    deleteGroups: _deleteGroups,
-  );
+        getGroups: _getGroups,
+        createGroup: _createGroup,
+        updateGroup: _updateGroup,
+        deleteGroups: _deleteGroups,
+      );
 
   Stream<GroupsBlocState> _getGroups() async* {
     yield _loadingState();
     yield await _getGroupsUseCase
         .getGroups()
         .then((List<Group> groups) =>
-        GroupsBlocState(GroupsBlocStatus.Loaded, groups: groups))
+            GroupsBlocState(GroupsBlocStatus.Loaded, groups: groups))
         .catchError(_errorState);
   }
 
@@ -86,13 +86,13 @@ class GroupsBloc extends Bloc<GroupsBlocEvent, GroupsBlocState> {
   }
 
   GroupsBlocState _loadingState() => GroupsBlocState(
-    GroupsBlocStatus.Loading,
-    groups: state.groups,
-  );
+        GroupsBlocStatus.Loading,
+        groups: state.groups,
+      );
 
   GroupsBlocState _errorState(Object error) => GroupsBlocState(
-    GroupsBlocStatus.Error,
-    groups: state.groups,
-    error: error,
-  );
+        GroupsBlocStatus.Error,
+        groups: state.groups,
+        error: error,
+      );
 }

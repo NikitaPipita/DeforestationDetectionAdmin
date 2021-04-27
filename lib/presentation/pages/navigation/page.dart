@@ -1,6 +1,7 @@
 import 'package:deforestation_detection_admin/presentation/pages/groups/page.dart';
 import 'package:deforestation_detection_admin/presentation/pages/iots/page.dart';
 import 'package:deforestation_detection_admin/presentation/pages/users/page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -30,23 +31,48 @@ class _NavigationPageState extends State<NavigationPage> {
               });
             },
             labelType: NavigationRailLabelType.selected,
-            destinations: const <NavigationRailDestination>[
+            destinations: <NavigationRailDestination>[
               NavigationRailDestination(
-                icon: Icon(Icons.account_circle_outlined),
-                selectedIcon: Icon(Icons.account_circle),
-                label: Text('Users'),
+                icon: const Icon(Icons.account_circle_outlined),
+                selectedIcon: const Icon(Icons.account_circle),
+                label: Text('users'.tr()),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.group_work_outlined),
-                selectedIcon: Icon(Icons.group_work),
-                label: Text('Groups'),
+                icon: const Icon(Icons.group_work_outlined),
+                selectedIcon: const Icon(Icons.group_work),
+                label: Text('groups'.tr()),
               ),
               NavigationRailDestination(
-                icon: Icon(Icons.wifi_tethering_outlined),
-                selectedIcon: Icon(Icons.wifi_tethering),
-                label: Text('IoTs'),
+                icon: const Icon(Icons.wifi_tethering_outlined),
+                selectedIcon: const Icon(Icons.wifi_tethering),
+                label: Text('iots'.tr()),
               ),
             ],
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextButton(
+                  onPressed: () {
+                    context.setLocale(const Locale('en'));
+                  },
+                  child: const Text(
+                    'ENG',
+                  ),
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                TextButton(
+                  onPressed: () {
+                    context.setLocale(const Locale('uk'));
+                  },
+                  child: const Text(
+                    'УКР',
+                  ),
+                ),
+              ],
+            ),
           ),
           const VerticalDivider(
             thickness: 1,

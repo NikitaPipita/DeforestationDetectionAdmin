@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class DeleteButton extends StatefulWidget {
@@ -26,7 +27,7 @@ class DeleteButtonState extends State<DeleteButton> {
   Widget build(BuildContext context) {
     return OutlinedButton(
       child: Text(
-        'Delete',
+        'delete'.tr(),
         style: TextStyle(
           color: _isActive ? Colors.red : null,
         ),

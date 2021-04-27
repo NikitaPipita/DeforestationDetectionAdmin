@@ -5,6 +5,7 @@ import 'package:deforestation_detection_admin/presentation/pages/users/component
 import 'package:deforestation_detection_admin/presentation/widgets/delete_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/edit_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/success_operation_dialog.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -112,8 +113,8 @@ class _UsersPageState extends State<UsersPage> {
               children: <Widget>[
                 OutlinedButton(
                   onPressed: _addUserDialog,
-                  child: const Text(
-                    'Add',
+                  child: Text(
+                    'add'.tr(),
                   ),
                 ),
                 const SizedBox(

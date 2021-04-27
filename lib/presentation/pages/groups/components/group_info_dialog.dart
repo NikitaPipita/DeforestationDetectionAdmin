@@ -3,6 +3,7 @@ import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/presentation/widgets/dropdown_id_menu.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -59,21 +60,21 @@ class _GroupInfoDialogState extends State<GroupInfoDialog> {
 
   String? _updateDurationSecondsValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Filed is empty';
+      return 'filed_is_empty'.tr();
     } else if (double.tryParse(value) == null) {
-      return 'Field contains non numeric symbols';
+      return 'field_contains_non_numeric_symbol'.tr();
     } else if (double.parse(value).toInt() < 60) {
-      return 'Value is less then 60';
+      return 'value_is_less_then_60'.tr();
     }
   }
 
   String? _lastIotChangesTimeUnixValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Filed is empty';
+      return 'filed_is_empty'.tr();
     } else if (double.tryParse(value) == null) {
-      return 'Field contains non numeric symbols';
+      return 'field_contains_non_numeric_symbol'.tr();
     } else if (double.parse(value).toInt() < 0) {
-      return 'Value is less then 0';
+      return 'value_is_less_then_0'.tr();
     }
   }
 
@@ -101,9 +102,9 @@ class _GroupInfoDialogState extends State<GroupInfoDialog> {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
+                child: Text(
+                  'cancel'.tr(),
+                  style: const TextStyle(
                     color: Colors.red,
                   ),
                 ),
@@ -130,7 +131,7 @@ class _GroupInfoDialogState extends State<GroupInfoDialog> {
                   }
                 },
                 child: Text(
-                  widget._group == null ? 'Add' : 'Edit',
+                  widget._group == null ? 'add'.tr() : 'edit'.tr(),
                 ),
               ),
             ],
@@ -151,15 +152,15 @@ class _GroupInfoDialogState extends State<GroupInfoDialog> {
                     ),
                     TextFormField(
                       controller: _updateDurationSecondsController,
-                      decoration: const InputDecoration(
-                        hintText: 'Check IoTs state period in seconds (min 60)',
+                      decoration: InputDecoration(
+                        hintText: 'check_iots_state_period'.tr(),
                       ),
                       validator: _updateDurationSecondsValidator,
                     ),
                     TextFormField(
                       controller: _lastIotChangesTimeUnixController,
-                      decoration: const InputDecoration(
-                        hintText: 'Last IoT changes in UNIX seconds',
+                      decoration: InputDecoration(
+                        hintText: 'last_iot_changes'.tr(),
                       ),
                       validator: _lastIotChangesTimeUnixValidator,
                     ),

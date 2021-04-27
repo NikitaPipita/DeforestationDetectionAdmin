@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class SuccessOperationDialog extends StatelessWidget {
@@ -10,16 +11,16 @@ class SuccessOperationDialog extends StatelessWidget {
     return AlertDialog(
       content: Row(
         mainAxisSize: MainAxisSize.min,
-        children: const <Widget>[
-          Icon(
+        children: <Widget>[
+          const Icon(
             Icons.where_to_vote,
             color: Colors.green,
           ),
-          SizedBox(
+          const SizedBox(
             width: 10.0,
           ),
           Text(
-            'Operation Completed Successfully!',
+            'operation_completed_successfully'.tr(),
           ),
         ],
       ),
@@ -28,8 +29,8 @@ class SuccessOperationDialog extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text(
-            'OK',
+          child: Text(
+            'ok'.tr(),
           ),
         ),
       ],

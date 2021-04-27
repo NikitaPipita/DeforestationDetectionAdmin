@@ -1,17 +1,33 @@
 import 'package:deforestation_detection_admin/presentation/pages/login/page.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 import 'dependency_injection.dart' as di;
 
-void main() {
+Future<void> main() async {
   di.init();
-  runApp(MyApp());
+
+  WidgetsFlutterBinding.ensureInitialized();
+  await EasyLocalization.ensureInitialized();
+
+  runApp(EasyLocalization(
+    supportedLocales: const <Locale>[
+      Locale('en'),
+      Locale('uk'),
+    ],
+    path: 'assets/translations',
+    fallbackLocale: const Locale('en'),
+    child: MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      localizationsDelegates: context.localizationDelegates,
+      supportedLocales: context.supportedLocales,
+      locale: context.locale,
       title: 'Deforestation Detection Admin',
       theme: ThemeData(
         primarySwatch: Colors.blue,

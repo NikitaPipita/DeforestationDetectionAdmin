@@ -1,5 +1,6 @@
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/utils/validators.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class UserInfoDialog extends StatefulWidget {
@@ -26,32 +27,31 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
 
   String _role = 'employee';
 
-  final List<DropdownMenuItem<String>> _menuItems =
-      const <DropdownMenuItem<String>>[
+  final List<DropdownMenuItem<String>> _menuItems = <DropdownMenuItem<String>>[
     DropdownMenuItem<String>(
       value: 'admin',
-      child: Text('admin'),
+      child: Text('admin'.tr()),
     ),
     DropdownMenuItem<String>(
       value: 'manager',
-      child: Text('manager'),
+      child: Text('manager'.tr()),
     ),
     DropdownMenuItem<String>(
       value: 'employee',
-      child: Text('employee'),
+      child: Text('employee'.tr()),
     ),
     DropdownMenuItem<String>(
       value: 'observer',
-      child: Text('observer'),
+      child: Text('observer'.tr()),
     ),
     DropdownMenuItem<String>(
       value: 'locked',
-      child: Text('locked'),
+      child: Text('locked'.tr()),
     ),
   ];
 
   String? _passwordValidator(String? value) {
-    const String passwordNotValidMessage = 'Password not valid';
+    final String passwordNotValidMessage = 'password_not_valid'.tr();
     if (widget._user == null) {
       if (value == null || value.isEmpty) {
         return passwordNotValidMessage;
@@ -60,7 +60,7 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
   }
 
   String? _fullNameValidator(String? value) {
-    const String fullNameNotValidMessage = 'Full name not valid';
+    final String fullNameNotValidMessage = 'full name not valid'.tr();
     if (value == null || value.isEmpty) {
       return fullNameNotValidMessage;
     }
@@ -84,9 +84,9 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: const Text(
-            'Cancel',
-            style: TextStyle(
+          child: Text(
+            'cancel'.tr(),
+            style: const TextStyle(
               color: Colors.red,
             ),
           ),
@@ -106,7 +106,7 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
             }
           },
           child: Text(
-            widget._user == null ? 'Add' : 'Edit',
+            widget._user == null ? 'add'.tr() : 'edit'.tr(),
           ),
         ),
       ],
@@ -119,23 +119,23 @@ class _UserInfoDialogState extends State<UserInfoDialog> {
             children: <Widget>[
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
+                decoration: InputDecoration(
+                  hintText: 'email'.tr(),
                 ),
                 validator: emailValidator,
               ),
               if (widget._user == null)
                 TextFormField(
                   controller: _passwordController,
-                  decoration: const InputDecoration(
-                    hintText: 'Password',
+                  decoration: InputDecoration(
+                    hintText: 'password'.tr(),
                   ),
                   validator: _passwordValidator,
                 ),
               TextFormField(
                 controller: _fullNameController,
-                decoration: const InputDecoration(
-                  hintText: 'Full Name',
+                decoration: InputDecoration(
+                  hintText: 'full_name'.tr(),
                 ),
                 validator: _fullNameValidator,
               ),

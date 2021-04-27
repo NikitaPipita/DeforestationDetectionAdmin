@@ -2,6 +2,7 @@ import 'package:deforestation_detection_admin/presentation/blocs/login/login_blo
 import 'package:deforestation_detection_admin/presentation/pages/navigation/page.dart';
 import 'package:deforestation_detection_admin/utils/validators.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,18 +33,46 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      context.setLocale(const Locale('en'));
+                    },
+                    child: const Text(
+                      'ENG',
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10.0,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      context.setLocale(const Locale('uk'));
+                    },
+                    child: const Text(
+                      'УКР',
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 30.0,
+              ),
               TextFormField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
+                decoration: InputDecoration(
+                  hintText: 'email'.tr(),
                 ),
                 validator: emailValidator,
               ),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
+                decoration: InputDecoration(
+                  hintText: 'password'.tr(),
                 ),
               ),
               const SizedBox(
@@ -59,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
                         return Dialog(
                           child: Center(
                             child: Text(
-                              'Something went wrong.\n' +
+                              'something_went_wrong'.tr() +
                                   snapshot.error.toString(),
                             ),
                           ),
@@ -86,8 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                       ));
                     }
                   },
-                  child: const Text(
-                    'Login',
+                  child: Text(
+                    'login'.tr(),
                   ),
                 ),
               ),

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 class EditButton extends StatefulWidget {
@@ -25,8 +26,8 @@ class EditButtonState extends State<EditButton> {
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
-      child: const Text(
-        'Edit',
+      child: Text(
+        'edit'.tr(),
       ),
       onPressed: _isActive ? widget._editElement : null,
     );

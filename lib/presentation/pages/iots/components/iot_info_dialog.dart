@@ -6,6 +6,7 @@ import 'package:deforestation_detection_admin/presentation/blocs/users/users_blo
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/presentation/widgets/dropdown_id_menu.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/dropdown_string_menu.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -42,40 +43,40 @@ class _IotInfoDialogState extends State<IotInfoDialog> {
 
   String? _iotState;
   final List<DropdownMenuItem<String>> _iotStateMenuItems =
-      const <DropdownMenuItem<String>>[
+      <DropdownMenuItem<String>>[
     DropdownMenuItem<String>(
       value: 'nothing',
       child: Text(
-        'nothing',
+        'nothing'.tr(),
       ),
     ),
     DropdownMenuItem<String>(
       value: 'active',
       child: Text(
-        'active',
+        'active'.tr(),
       ),
     ),
     DropdownMenuItem<String>(
       value: 'lost',
       child: Text(
-        'lost',
+        'lost'.tr(),
       ),
     ),
   ];
 
   String? _type;
   final List<DropdownMenuItem<String>> _typeMenuItems =
-      const <DropdownMenuItem<String>>[
+      <DropdownMenuItem<String>>[
     DropdownMenuItem<String>(
       value: 'gyroscope',
       child: Text(
-        'gyroscope',
+        'gyroscope'.tr(),
       ),
     ),
     DropdownMenuItem<String>(
       value: 'microphone',
       child: Text(
-        'microphone',
+        'microphone'.tr(),
       ),
     ),
   ];
@@ -136,31 +137,31 @@ class _IotInfoDialogState extends State<IotInfoDialog> {
 
   String? _longitudeValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Filed is empty';
+      return 'filed_is_empty'.tr();
     } else if (double.tryParse(value) == null) {
-      return 'Field contains non numeric symbols';
+      return 'field_contains_non_numeric_symbol'.tr();
     } else if (double.parse(value) < -180 || double.parse(value) > 180) {
-      return 'Longitude need to be between -180 and 180';
+      return 'longitude_need_to'.tr();
     }
   }
 
   String? _latitudeValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Filed is empty';
+      return 'filed_is_empty'.tr();
     } else if (double.tryParse(value) == null) {
-      return 'Field contains non numeric symbols';
+      return 'field_contains_non_numeric_symbol'.tr();
     } else if (double.parse(value) < -90 || double.parse(value) > 90) {
-      return 'Latitude need to be between -90 and 90';
+      return 'latitude_need_to'.tr();
     }
   }
 
   String? _lastUpdateTimeUnixValidator(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Filed is empty';
+      return 'filed_is_empty'.tr();
     } else if (double.tryParse(value) == null) {
-      return 'Field contains non numeric symbols';
+      return 'field_contains_non_numeric_symbol'.tr();
     } else if (double.parse(value).toInt() < 0) {
-      return 'Latitude need to be between 0';
+      return 'value_is_less_then_0'.tr();
     }
   }
 
@@ -197,9 +198,9 @@ class _IotInfoDialogState extends State<IotInfoDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text(
-                      'Cancel',
-                      style: TextStyle(
+                    child: Text(
+                      'cancel'.tr(),
+                      style: const TextStyle(
                         color: Colors.red,
                       ),
                     ),
@@ -233,7 +234,7 @@ class _IotInfoDialogState extends State<IotInfoDialog> {
                       }
                     },
                     child: Text(
-                      widget._iot == null ? 'Add' : 'Edit',
+                      widget._iot == null ? 'add'.tr() : 'edit'.tr(),
                     ),
                   ),
                 ],
@@ -262,22 +263,22 @@ class _IotInfoDialogState extends State<IotInfoDialog> {
                         ),
                         TextFormField(
                           controller: _longitudeController,
-                          decoration: const InputDecoration(
-                            hintText: 'IoT longitude',
+                          decoration: InputDecoration(
+                            hintText: 'iot_longitude'.tr(),
                           ),
                           validator: _longitudeValidator,
                         ),
                         TextFormField(
                           controller: _latitudeController,
-                          decoration: const InputDecoration(
-                            hintText: 'IoT latitude',
+                          decoration: InputDecoration(
+                            hintText: 'iot_latitude'.tr(),
                           ),
                           validator: _latitudeValidator,
                         ),
                         TextFormField(
                           controller: _lastUpdateTimeUnix,
-                          decoration: const InputDecoration(
-                            hintText: 'IoT last update time unix',
+                          decoration: InputDecoration(
+                            hintText: 'iot_last_update_time'.tr(),
                           ),
                           validator: _lastUpdateTimeUnixValidator,
                         ),

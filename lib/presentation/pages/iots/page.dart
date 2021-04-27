@@ -1,63 +1,64 @@
-import 'package:deforestation_detection_admin/domain/entities/group.dart';
-import 'package:deforestation_detection_admin/presentation/blocs/groups/groups_bloc.dart';
+import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
+import 'package:deforestation_detection_admin/presentation/blocs/iots/iots_bloc.dart';
+import 'package:deforestation_detection_admin/presentation/pages/iots/components/iot_info_dialog.dart';
+import 'package:deforestation_detection_admin/presentation/pages/iots/components/iots_list.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/delete_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/edit_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/success_operation_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'components/group_info_dialog.dart';
-import 'components/groups_list.dart';
 
-class GroupsPage extends StatefulWidget {
+
+class IotsPage extends StatefulWidget {
   @override
-  _GroupsPageState createState() => _GroupsPageState();
+  _IotsPageState createState() => _IotsPageState();
 }
 
-class _GroupsPageState extends State<GroupsPage> {
-  final GroupsBloc _groupsBloc = di.sl.get();
+class _IotsPageState extends State<IotsPage> {
+  final IotsBloc _iotsBloc = di.sl.get();
 
   final GlobalKey<EditButtonState> _editButtonKey =
-      GlobalKey<EditButtonState>();
+  GlobalKey<EditButtonState>();
   final GlobalKey<DeleteButtonState> _deleteButtonKey =
-      GlobalKey<DeleteButtonState>();
-  List<Group> _groups = <Group>[];
+  GlobalKey<DeleteButtonState>();
+  List<Iot> _iots = <Iot>[];
   List<bool> _tilesCheckState = <bool>[];
 
-  void _addGroupDialog() {
+  void _addIotDialog() {
     showDialog<void>(
       context: context,
       builder: (BuildContext context) {
-        return GroupInfoDialog(
-          callback: (Group group) {
+        return IotInfoDialog(
+          callback: (Iot iot) {
             _editButtonKey.currentState!.setActiveState(false);
             _deleteButtonKey.currentState!.setActiveState(false);
-            _groupsBloc.add(GroupsBlocEvent.createGroup(group));
+            _iotsBloc.add(IotsBlocEvent.createIot(iot));
           },
         );
       },
     );
   }
 
-  void _editGroupDialog() {
-    Group? group;
+  void _editIotDialog() {
+    Iot? iot;
     for (int i = 0; i < _tilesCheckState.length; i++) {
       if (_tilesCheckState[i]) {
-        group = _groups[i];
+        iot = _iots[i];
         break;
       }
     }
-    if (group != null) {
+    if (iot != null) {
       showDialog<void>(
         context: context,
         builder: (BuildContext context) {
-          return GroupInfoDialog(
-            group: group,
-            callback: (Group group) {
+          return IotInfoDialog(
+            iot: iot,
+            callback: (Iot iot) {
               _editButtonKey.currentState!.setActiveState(false);
               _deleteButtonKey.currentState!.setActiveState(false);
-              _groupsBloc.add(GroupsBlocEvent.updateGroup(group));
+              _iotsBloc.add(IotsBlocEvent.updateIot(iot));
             },
           );
         },
@@ -65,30 +66,30 @@ class _GroupsPageState extends State<GroupsPage> {
     }
   }
 
-  void _deleteGroups() {
+  void _deleteUsers() {
     final List<int> ids = <int>[];
     for (int i = 0; i < _tilesCheckState.length; i++) {
       if (_tilesCheckState[i]) {
-        ids.add(_groups[i].id!);
+        ids.add(_iots[i].id!);
       }
     }
     if (ids.isNotEmpty) {
       _editButtonKey.currentState!.setActiveState(false);
       _deleteButtonKey.currentState!.setActiveState(false);
-      _groupsBloc.add(GroupsBlocEvent.deleteGroups(ids));
+      _iotsBloc.add(IotsBlocEvent.deleteIots(ids));
     }
   }
 
-  void _loadGroups() {
-    _groupsBloc.add(const GroupsBlocEvent.getGroups());
+  void _loadIots() {
+    _iotsBloc.add(const IotsBlocEvent.getIots());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<GroupsBloc, GroupsBlocState>(
-      bloc: _groupsBloc,
-      listener: (BuildContext context, GroupsBlocState snapshot) {
-        if (snapshot.status == GroupsBlocStatus.OperationSuccess) {
+    return BlocListener<IotsBloc, IotsBlocState>(
+      bloc: _iotsBloc,
+      listener: (BuildContext context, IotsBlocState snapshot) {
+        if (snapshot.status == IotsBlocStatus.OperationSuccess) {
           showDialog<void>(
             context: context,
             builder: (BuildContext context) {
@@ -111,7 +112,7 @@ class _GroupsPageState extends State<GroupsPage> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 OutlinedButton(
-                  onPressed: _addGroupDialog,
+                  onPressed: _addIotDialog,
                   child: const Text(
                     'Add',
                   ),
@@ -121,14 +122,14 @@ class _GroupsPageState extends State<GroupsPage> {
                 ),
                 EditButton(
                   key: _editButtonKey,
-                  editElement: _editGroupDialog,
+                  editElement: _editIotDialog,
                 ),
                 const SizedBox(
                   width: 15.0,
                 ),
                 DeleteButton(
                   key: _deleteButtonKey,
-                  deleteElements: _deleteGroups,
+                  deleteElements: _deleteUsers,
                 ),
                 const SizedBox(
                   width: 15.0,
@@ -137,7 +138,7 @@ class _GroupsPageState extends State<GroupsPage> {
                   icon: const Icon(
                     Icons.update,
                   ),
-                  onPressed: _loadGroups,
+                  onPressed: _loadIots,
                 ),
               ],
             ),
@@ -147,25 +148,25 @@ class _GroupsPageState extends State<GroupsPage> {
             width: double.infinity,
             color: Colors.grey,
           ),
-          BlocBuilder<GroupsBloc, GroupsBlocState>(
-            bloc: _groupsBloc,
-            builder: (BuildContext context, GroupsBlocState snapshot) {
-              if (snapshot.status == GroupsBlocStatus.Error) {
+          BlocBuilder<IotsBloc, IotsBlocState>(
+            bloc: _iotsBloc,
+            builder: (BuildContext context, IotsBlocState snapshot) {
+              if (snapshot.status == IotsBlocStatus.Error) {
                 return Center(
                   child: Text(
                     snapshot.error.toString(),
                   ),
                 );
-              } else if (snapshot.status == GroupsBlocStatus.Loading) {
+              } else if (snapshot.status == IotsBlocStatus.Loading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              _groups = snapshot.groups!;
+              _iots = snapshot.iots!;
               _tilesCheckState = List<bool>.generate(
-                  snapshot.groups!.length, (int index) => false);
-              return GroupsList(
-                groupsInfo: snapshot.groups!,
+                  snapshot.iots!.length, (int index) => false);
+              return IotsList(
+                iotsInfo: snapshot.iots!,
                 tilesCheckState: _tilesCheckState,
                 tileCheckCallback: (int index, bool isChecked) {
                   _tilesCheckState[index] = isChecked;

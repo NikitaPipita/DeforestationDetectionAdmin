@@ -34,7 +34,7 @@ class ApiIotGateWay {
               groupData['last_iot_changes_time_unix'] as int,
         );
         return IotDto(
-          id: iotData['group_id'] as int,
+          id: iotData['iot_id'] as int,
           userDto: userDto,
           groupDto: groupDto,
           longitude: iotData['longitude'] as double,
@@ -69,7 +69,7 @@ class ApiIotGateWay {
         lastIotChangesTimeUnix: groupData['last_iot_changes_time_unix'] as int,
       );
       return IotDto(
-        id: response.data['group_id'] as int,
+        id: response.data['iot_id'] as int,
         userDto: userDto,
         groupDto: groupDto,
         longitude: response.data['longitude'] as double,

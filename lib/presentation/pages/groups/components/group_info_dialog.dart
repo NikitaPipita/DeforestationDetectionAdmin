@@ -2,6 +2,7 @@ import 'package:deforestation_detection_admin/domain/entities/group.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
+import 'package:deforestation_detection_admin/presentation/widgets/dropdown_id_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -180,52 +181,5 @@ class _GroupInfoDialogState extends State<GroupInfoDialog> {
     _updateDurationSecondsController.dispose();
     _lastIotChangesTimeUnixController.dispose();
     super.dispose();
-  }
-}
-
-class DropdownIdMenu extends StatefulWidget {
-  const DropdownIdMenu({
-    required int? initialValue,
-    required List<DropdownMenuItem<int>> menuItems,
-    required Function(int)? onChanged,
-    Key? key,
-  })  : _initialValue = initialValue,
-        _menuItems = menuItems,
-        _onChanged = onChanged,
-        super(key: key);
-
-  final int? _initialValue;
-  final List<DropdownMenuItem<int>> _menuItems;
-  final Function(int)? _onChanged;
-
-  @override
-  _DropdownIdMenuState createState() => _DropdownIdMenuState();
-}
-
-class _DropdownIdMenuState extends State<DropdownIdMenu> {
-  int? _id;
-
-  void _setId(int? value) {
-    if (value != null) {
-      widget._onChanged!(value);
-      setState(() {
-        _id = value;
-      });
-    }
-  }
-
-  @override
-  void initState() {
-    _id = widget._initialValue;
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButton<int>(
-      value: _id,
-      items: widget._menuItems,
-      onChanged: widget._onChanged == null ? null : _setId,
-    );
   }
 }

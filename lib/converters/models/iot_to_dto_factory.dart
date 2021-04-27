@@ -6,11 +6,11 @@ import 'package:deforestation_detection_admin/domain/entities/group.dart';
 import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 
-class IotFromDtoFactory implements Factory<IotDto, Iot> {
+class IotToDtoFactory implements Factory<IotDto, Iot> {
   final Factory<UserDto, User> _userFactory;
   final Factory<GroupDto, Group> _groupFactory;
 
-  IotFromDtoFactory(
+  IotToDtoFactory(
     this._userFactory,
     this._groupFactory,
   );

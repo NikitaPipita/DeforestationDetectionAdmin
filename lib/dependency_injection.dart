@@ -1,35 +1,48 @@
 import 'package:deforestation_detection_admin/converters/entities/group_from_dto_factory.dart';
-import 'file:///C:/Users/Admin/Desktop/deforestation_detection_admin/deforestation_detection_admin/lib/converters/models/group_to_dto_factory.dart';
+import 'package:deforestation_detection_admin/converters/entities/iot_from_dto_factory.dart';
 import 'package:deforestation_detection_admin/converters/entities/user_from_dto_factory.dart';
-import 'file:///C:/Users/Admin/Desktop/deforestation_detection_admin/deforestation_detection_admin/lib/converters/models/user_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/converters/factory.dart';
+import 'package:deforestation_detection_admin/converters/models/iot_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_authentication_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_group_gateway.dart';
+import 'package:deforestation_detection_admin/data/gateways/api_iot_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_provider.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_user_gateway.dart';
 import 'package:deforestation_detection_admin/data/models/group_dto.dart';
+import 'package:deforestation_detection_admin/data/models/iot_dto.dart';
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
 import 'package:deforestation_detection_admin/data/repositories/api_group_repository.dart';
+import 'package:deforestation_detection_admin/data/repositories/api_iot_repository.dart';
 import 'package:deforestation_detection_admin/data/repositories/api_user_repository.dart';
 import 'package:deforestation_detection_admin/data/services/api_login_service.dart';
 import 'package:deforestation_detection_admin/domain/entities/group.dart';
+import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/domain/repositories/group_repository.dart';
+import 'package:deforestation_detection_admin/domain/repositories/iot_repository.dart';
 import 'package:deforestation_detection_admin/domain/repositories/user_repository.dart';
 import 'package:deforestation_detection_admin/domain/services/login_service.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/group/create_group_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/group/delete_group_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/group/get_groups_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/group/update_group_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/iot/create_iot_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/iot/delete_iot_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/iot/get_iots_use_case.dart';
+import 'package:deforestation_detection_admin/domain/use_cases/iot/update_iot_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/login/login_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/create_user_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/delete_user_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/get_users_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/update_user_use_case.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/groups/groups_bloc.dart';
+import 'package:deforestation_detection_admin/presentation/blocs/iots/iots_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/login/login_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
 import 'package:get_it/get_it.dart';
+
+import 'converters/models/group_to_dto_factory.dart';
+import 'converters/models/user_to_dto_factory.dart';
 
 final GetIt sl = GetIt.instance;
 
@@ -76,4 +89,21 @@ void init() {
       () => ApiDeleteGroupUseCase(sl.get()));
   sl.registerLazySingleton<GroupsBloc>(
       () => GroupsBloc(sl.get(), sl.get(), sl.get(), sl.get()));
+
+  sl.registerLazySingleton<ApiIotGateWay>(() => ApiIotGateWay(sl.get()));
+  sl.registerLazySingleton<Factory<Iot, IotDto>>(
+      () => IotFromDtoFactory(sl.get(), sl.get()));
+  sl.registerLazySingleton<Factory<IotDto, Iot>>(
+      () => IotToDtoFactory(sl.get(), sl.get()));
+  sl.registerLazySingleton<IotRepository>(
+      () => ApiIotRepository(sl.get(), sl.get(), sl.get()));
+  sl.registerLazySingleton<GetIotsUseCase>(() => ApiGetIotsUseCase(sl.get()));
+  sl.registerLazySingleton<CreateIotUseCase>(
+      () => ApiCreateIotUseCase(sl.get()));
+  sl.registerLazySingleton<UpdateIotUseCase>(
+      () => ApiUpdateIotUseCase(sl.get()));
+  sl.registerLazySingleton<DeleteIotUseCase>(
+      () => ApiDeleteIotUseCase(sl.get()));
+  sl.registerLazySingleton<IotsBloc>(
+      () => IotsBloc(sl.get(), sl.get(), sl.get(), sl.get()));
 }

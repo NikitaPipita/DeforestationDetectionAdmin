@@ -7,7 +7,7 @@ class ApiProvider {
   JsonWebTokenDto? _jsonWebTokenDto;
 
   ApiProvider() : _dio = Dio() {
-    _dio.options.baseUrl = 'http://localhost:8080/';
+    _dio.options.baseUrl = 'https://deforestation-proj.herokuapp.com/';
   }
 
   void _addTokenToDio(String token) {

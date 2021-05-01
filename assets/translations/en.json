@@ -35,5 +35,6 @@
   "iot_last_update_time": "IoT last update time unix",
   "delete": "Delete",
   "operation_completed_successfully": "Operation Completed Successfully!",
-  "ok": "OK"
+  "ok": "OK",
+  "email_not_valid": "Email not valid"
 }

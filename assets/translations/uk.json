@@ -35,5 +35,6 @@
   "iot_last_update_time": "Час останнього оновлення IoT unix",
   "delete": "Видалити",
   "operation_completed_successfully": "Операція завершена успішно!",
-  "ok": "ОК"
+  "ok": "ОК",
+  "email_not_valid": "Електронна адреса недійсна"
 }

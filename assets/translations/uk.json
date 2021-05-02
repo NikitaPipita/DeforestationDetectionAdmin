@@ -36,5 +36,6 @@
   "delete": "Видалити",
   "operation_completed_successfully": "Операція завершена успішно!",
   "ok": "ОК",
-  "email_not_valid": "Електронна адреса недійсна"
+  "email_not_valid": "Електронна адреса недійсна",
+  "group": "Група"
 }

@@ -255,10 +255,21 @@ class _IotInfoDialogState extends State<IotInfoDialog> {
                         ),
                         Align(
                           alignment: Alignment.centerLeft,
-                          child: DropdownIdMenu(
-                            initialValue: _groupId,
-                            menuItems: _groupMenuItems,
-                            onChanged: widget._iot == null ? _setGroupId : null,
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Text(
+                                'group'.tr(),
+                              ),
+                              const SizedBox(
+                                width: 10.0,
+                              ),
+                              DropdownIdMenu(
+                                initialValue: _groupId,
+                                menuItems: _groupMenuItems,
+                                onChanged: widget._iot == null ? _setGroupId : null,
+                              ),
+                            ],
                           ),
                         ),
                         TextFormField(

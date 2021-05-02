@@ -37,5 +37,8 @@
   "operation_completed_successfully": "Операція завершена успішно!",
   "ok": "ОК",
   "email_not_valid": "Електронна адреса недійсна",
-  "group": "Група"
+  "group": "Група",
+  "dumps": "Дампи",
+  "make_dump": "Зробити дамп",
+  "upload_dump": "Завантажити дамп"
 }

@@ -37,5 +37,8 @@
   "operation_completed_successfully": "Operation Completed Successfully!",
   "ok": "OK",
   "email_not_valid": "Email not valid",
-  "group": "Group"
+  "group": "Group",
+  "dumps": "Dumps",
+  "make_dump": "Make dump",
+  "upload_dump": "Upload dump"
 }

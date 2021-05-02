@@ -4,6 +4,7 @@ import 'package:deforestation_detection_admin/converters/entities/user_from_dto_
 import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/converters/models/iot_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_authentication_gateway.dart';
+import 'package:deforestation_detection_admin/data/gateways/api_dumps_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_group_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_iot_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_provider.dart';
@@ -106,4 +107,6 @@ void init() {
       () => ApiDeleteIotUseCase(sl.get()));
   sl.registerLazySingleton<IotsBloc>(
       () => IotsBloc(sl.get(), sl.get(), sl.get(), sl.get()));
+
+  sl.registerLazySingleton<ApiDumpsGateway>(() => ApiDumpsGateway(sl.get()));
 }

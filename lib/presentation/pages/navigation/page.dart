@@ -1,3 +1,4 @@
+import 'package:deforestation_detection_admin/presentation/pages/dumps/page.dart';
 import 'package:deforestation_detection_admin/presentation/pages/groups/page.dart';
 import 'package:deforestation_detection_admin/presentation/pages/iots/page.dart';
 import 'package:deforestation_detection_admin/presentation/pages/users/page.dart';
@@ -16,6 +17,7 @@ class _NavigationPageState extends State<NavigationPage> {
     UsersPage(),
     GroupsPage(),
     IotsPage(),
+    DumpsPage(),
   ];
 
   @override
@@ -46,6 +48,11 @@ class _NavigationPageState extends State<NavigationPage> {
                 icon: const Icon(Icons.wifi_tethering_outlined),
                 selectedIcon: const Icon(Icons.wifi_tethering),
                 label: Text('iots'.tr()),
+              ),
+              NavigationRailDestination(
+                icon: const Icon(Icons.storage_outlined),
+                selectedIcon: const Icon(Icons.storage),
+                label: Text('dumps'.tr()),
               ),
             ],
             trailing: Row(

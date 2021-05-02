@@ -1,5 +1,6 @@
 import 'package:deforestation_detection_admin/data/models/jwt_dto.dart';
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 class ApiProvider {
   final Dio _dio;
@@ -62,19 +63,23 @@ class ApiProvider {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    Response<dynamic> response =
-        await _dio.get<dynamic>(path, queryParameters: queryParameters);
+    Response<dynamic> response = await _dio.get<dynamic>(
+      path,
+      queryParameters: queryParameters,
+    );
     if (_isResponseValid(response)) {
       await _refreshToken();
-      response =
-          await _dio.get<dynamic>(path, queryParameters: queryParameters);
+      response = await _dio.get<dynamic>(
+        path,
+        queryParameters: queryParameters,
+      );
     }
     return response;
   }
 
   Future<Response<dynamic>> apiProviderPost(
     String path, {
-    Map<String, dynamic>? data,
+    dynamic data,
     Map<String, dynamic>? queryParameters,
   }) async {
     Response<dynamic> response = await _dio.post<dynamic>(
@@ -94,10 +99,10 @@ class ApiProvider {
   }
 
   Future<Response<dynamic>> apiProviderPut(
-      String path, {
-        Map<String, dynamic>? data,
-        Map<String, dynamic>? queryParameters,
-      }) async {
+    String path, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     Response<dynamic> response = await _dio.put<dynamic>(
       path,
       data: data,
@@ -118,12 +123,42 @@ class ApiProvider {
     String path, {
     Map<String, dynamic>? queryParameters,
   }) async {
-    Response<dynamic> response =
-        await _dio.delete<dynamic>(path, queryParameters: queryParameters);
+    Response<dynamic> response = await _dio.delete<dynamic>(
+      path,
+      queryParameters: queryParameters,
+    );
     if (_isResponseValid(response)) {
       await _refreshToken();
-      response =
-          await _dio.delete<dynamic>(path, queryParameters: queryParameters);
+      response = await _dio.delete<dynamic>(
+        path,
+        queryParameters: queryParameters,
+      );
+    }
+    return response;
+  }
+
+  Future<http.Response> apiProviderGetFile(String path) async {
+    final Map<String, String> headers = <String, String>{
+      'Content-Type': 'application/octet-stream',
+      'Accept': 'application/octet-stream',
+      'Authorization' : 'Bearer ${_jsonWebTokenDto!.accessToken}'
+    };
+
+    http.Response response = await http.get(
+      Uri.parse(
+        _dio.options.baseUrl + path,
+      ),
+      headers: headers,
+    );
+    if (response.statusCode >= 400 && response.statusCode <= 499) {
+      await _refreshToken();
+      headers['Authorization'] = 'Bearer ${_jsonWebTokenDto!.accessToken}';
+      response = await http.get(
+        Uri.parse(
+          _dio.options.baseUrl + path,
+        ),
+        headers: headers,
+      );
     }
     return response;
   }

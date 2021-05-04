@@ -40,5 +40,7 @@
   "group": "Group",
   "dumps": "Dumps",
   "make_dump": "Make dump",
-  "upload_dump": "Upload dump"
+  "upload_dump": "Upload dump",
+  "longitude": "Longitude",
+  "latitude": "Latitude"
 }

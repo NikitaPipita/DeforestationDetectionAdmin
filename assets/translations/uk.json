@@ -40,5 +40,7 @@
   "group": "Група",
   "dumps": "Дампи",
   "make_dump": "Зробити дамп",
-  "upload_dump": "Завантажити дамп"
+  "upload_dump": "Завантажити дамп",
+  "longitude": "Довгота",
+  "latitude": "Широта"
 }

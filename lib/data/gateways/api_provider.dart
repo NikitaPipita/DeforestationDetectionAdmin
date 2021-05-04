@@ -60,34 +60,47 @@ class ApiProvider {
   }
 
   Future<Response<dynamic>> apiProviderGet(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-  }) async {
-    Response<dynamic> response = await _dio.get<dynamic>(
-      path,
-      queryParameters: queryParameters,
-    );
-    if (_isResponseValid(response)) {
+      String path, {
+        Map<String, dynamic>? queryParameters,
+      }) async {
+    Response<dynamic> response;
+    try {
+      response =
+      await _dio.get<dynamic>(path, queryParameters: queryParameters);
+      if (_isResponseValid(response)) {
+        await _refreshToken();
+        response =
+        await _dio.get<dynamic>(path, queryParameters: queryParameters);
+      }
+    } on Exception catch (_) {
       await _refreshToken();
-      response = await _dio.get<dynamic>(
-        path,
-        queryParameters: queryParameters,
-      );
+      response =
+      await _dio.get<dynamic>(path, queryParameters: queryParameters);
     }
     return response;
   }
 
   Future<Response<dynamic>> apiProviderPost(
-    String path, {
-    dynamic data,
-    Map<String, dynamic>? queryParameters,
-  }) async {
-    Response<dynamic> response = await _dio.post<dynamic>(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
-    if (_isResponseValid(response)) {
+      String path, {
+        dynamic data,
+        Map<String, dynamic>? queryParameters,
+      }) async {
+    Response<dynamic> response;
+    try {
+      response = await _dio.post<dynamic>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+      if (_isResponseValid(response)) {
+        await _refreshToken();
+        response = await _dio.post<dynamic>(
+          path,
+          data: data,
+          queryParameters: queryParameters,
+        );
+      }
+    } on Exception catch (_) {
       await _refreshToken();
       response = await _dio.post<dynamic>(
         path,
@@ -99,16 +112,26 @@ class ApiProvider {
   }
 
   Future<Response<dynamic>> apiProviderPut(
-    String path, {
-    Map<String, dynamic>? data,
-    Map<String, dynamic>? queryParameters,
-  }) async {
-    Response<dynamic> response = await _dio.put<dynamic>(
-      path,
-      data: data,
-      queryParameters: queryParameters,
-    );
-    if (_isResponseValid(response)) {
+      String path, {
+        Map<String, dynamic>? data,
+        Map<String, dynamic>? queryParameters,
+      }) async {
+    Response<dynamic> response;
+    try {
+      response = await _dio.put<dynamic>(
+        path,
+        data: data,
+        queryParameters: queryParameters,
+      );
+      if (_isResponseValid(response)) {
+        await _refreshToken();
+        response = await _dio.put<dynamic>(
+          path,
+          data: data,
+          queryParameters: queryParameters,
+        );
+      }
+    } on Exception catch (_) {
       await _refreshToken();
       response = await _dio.put<dynamic>(
         path,
@@ -120,14 +143,23 @@ class ApiProvider {
   }
 
   Future<Response<dynamic>> apiProviderDelete(
-    String path, {
-    Map<String, dynamic>? queryParameters,
-  }) async {
-    Response<dynamic> response = await _dio.delete<dynamic>(
-      path,
-      queryParameters: queryParameters,
-    );
-    if (_isResponseValid(response)) {
+      String path, {
+        Map<String, dynamic>? queryParameters,
+      }) async {
+    Response<dynamic> response;
+    try {
+      response = await _dio.delete<dynamic>(
+        path,
+        queryParameters: queryParameters,
+      );
+      if (_isResponseValid(response)) {
+        await _refreshToken();
+        response = await _dio.delete<dynamic>(
+          path,
+          queryParameters: queryParameters,
+        );
+      }
+    } on Exception catch (_) {
       await _refreshToken();
       response = await _dio.delete<dynamic>(
         path,

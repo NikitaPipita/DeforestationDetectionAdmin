@@ -1,6 +1,6 @@
+import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
-import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/presentation/pages/users/components/users_list.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/delete_button.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/edit_button.dart';

@@ -3,14 +3,14 @@ import 'package:deforestation_detection_admin/domain/use_cases/user/create_user_
 import 'package:deforestation_detection_admin/domain/use_cases/user/delete_user_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/get_users_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/update_user_use_case.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 
+part 'users_bloc.freezed.dart';
 part 'users_bloc_event.dart';
 part 'users_bloc_state.dart';
 part 'users_bloc_status.dart';
-part 'users_bloc.freezed.dart';
 
 class UsersBloc extends Bloc<UsersBlocEvent, UsersBlocState> {
   final GetUsersUseCase _getUsersUseCase;

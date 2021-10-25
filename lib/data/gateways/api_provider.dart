@@ -1,13 +1,20 @@
 import 'package:deforestation_detection_admin/data/models/jwt_dto.dart';
+import 'package:deforestation_detection_admin/factories/factory.dart';
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
+
+class NullableIdException implements Exception {
+  final String cause;
+
+  NullableIdException(this.cause);
+}
 
 class ApiProvider {
   final Dio _dio;
+  final Factory<JsonWebTokenDto, Map<String, dynamic>> _jsonWebTokenFactory;
 
-  JsonWebTokenDto? _jsonWebTokenDto;
+  late JsonWebTokenDto _jsonWebTokenDto;
 
-  ApiProvider() : _dio = Dio() {
+  ApiProvider(this._jsonWebTokenFactory) : _dio = Dio() {
     _dio.options.baseUrl = 'https://deforestation-proj.herokuapp.com/';
   }
 
@@ -15,26 +22,16 @@ class ApiProvider {
     _dio.options.headers['Authorization'] = 'Bearer ' + token;
   }
 
-  bool _isResponseValid(Response<dynamic> response) {
-    return response.statusCode! >= 400 && response.statusCode! <= 499;
-  }
-
   Future<void> _refreshToken() async {
     final Response<dynamic> response = await _dio.post<dynamic>(
       'refresh',
       data: <String, dynamic>{
-        'token': _jsonWebTokenDto!.refreshToken,
+        'token': _jsonWebTokenDto.refreshToken,
       },
     );
-    if (response.statusCode == 201) {
-      _jsonWebTokenDto = JsonWebTokenDto(
-        accessToken: response.data['access_token'] as String,
-        refreshToken: response.data['refresh_token'] as String,
-      );
-      _addTokenToDio(_jsonWebTokenDto!.accessToken);
-    } else {
-      throw Exception('Failed to refresh token.');
-    }
+    _jsonWebTokenDto =
+        _jsonWebTokenFactory.create(response.data as Map<String, dynamic>);
+    _addTokenToDio(_jsonWebTokenDto.accessToken);
   }
 
   Future<Response<dynamic>> authentication(
@@ -47,44 +44,33 @@ class ApiProvider {
       },
     );
 
-    if (response.statusCode == 200) {
-      _jsonWebTokenDto = JsonWebTokenDto(
-        accessToken: response.data['access_token'] as String,
-        refreshToken: response.data['refresh_token'] as String,
-      );
-      _addTokenToDio(_jsonWebTokenDto!.accessToken);
-      return response;
-    } else {
-      throw Exception('Failed to authenticate user.');
-    }
+    _jsonWebTokenDto =
+        _jsonWebTokenFactory.create(response.data as Map<String, dynamic>);
+    _addTokenToDio(_jsonWebTokenDto.accessToken);
+    return response;
   }
 
   Future<Response<dynamic>> apiProviderGet(
-      String path, {
-        Map<String, dynamic>? queryParameters,
-      }) async {
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     Response<dynamic> response;
     try {
       response =
-      await _dio.get<dynamic>(path, queryParameters: queryParameters);
-      if (_isResponseValid(response)) {
-        await _refreshToken();
-        response =
-        await _dio.get<dynamic>(path, queryParameters: queryParameters);
-      }
+          await _dio.get<dynamic>(path, queryParameters: queryParameters);
     } on Exception catch (_) {
       await _refreshToken();
       response =
-      await _dio.get<dynamic>(path, queryParameters: queryParameters);
+          await _dio.get<dynamic>(path, queryParameters: queryParameters);
     }
     return response;
   }
 
   Future<Response<dynamic>> apiProviderPost(
-      String path, {
-        dynamic data,
-        Map<String, dynamic>? queryParameters,
-      }) async {
+    String path, {
+    dynamic data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     Response<dynamic> response;
     try {
       response = await _dio.post<dynamic>(
@@ -92,14 +78,6 @@ class ApiProvider {
         data: data,
         queryParameters: queryParameters,
       );
-      if (_isResponseValid(response)) {
-        await _refreshToken();
-        response = await _dio.post<dynamic>(
-          path,
-          data: data,
-          queryParameters: queryParameters,
-        );
-      }
     } on Exception catch (_) {
       await _refreshToken();
       response = await _dio.post<dynamic>(
@@ -112,10 +90,10 @@ class ApiProvider {
   }
 
   Future<Response<dynamic>> apiProviderPut(
-      String path, {
-        Map<String, dynamic>? data,
-        Map<String, dynamic>? queryParameters,
-      }) async {
+    String path, {
+    Map<String, dynamic>? data,
+    Map<String, dynamic>? queryParameters,
+  }) async {
     Response<dynamic> response;
     try {
       response = await _dio.put<dynamic>(
@@ -123,14 +101,6 @@ class ApiProvider {
         data: data,
         queryParameters: queryParameters,
       );
-      if (_isResponseValid(response)) {
-        await _refreshToken();
-        response = await _dio.put<dynamic>(
-          path,
-          data: data,
-          queryParameters: queryParameters,
-        );
-      }
     } on Exception catch (_) {
       await _refreshToken();
       response = await _dio.put<dynamic>(
@@ -143,53 +113,20 @@ class ApiProvider {
   }
 
   Future<Response<dynamic>> apiProviderDelete(
-      String path, {
-        Map<String, dynamic>? queryParameters,
-      }) async {
+    String path, {
+    Map<String, dynamic>? queryParameters,
+  }) async {
     Response<dynamic> response;
     try {
       response = await _dio.delete<dynamic>(
         path,
         queryParameters: queryParameters,
       );
-      if (_isResponseValid(response)) {
-        await _refreshToken();
-        response = await _dio.delete<dynamic>(
-          path,
-          queryParameters: queryParameters,
-        );
-      }
     } on Exception catch (_) {
       await _refreshToken();
       response = await _dio.delete<dynamic>(
         path,
         queryParameters: queryParameters,
-      );
-    }
-    return response;
-  }
-
-  Future<http.Response> apiProviderGetFile(String path) async {
-    final Map<String, String> headers = <String, String>{
-      'Content-Type': 'application/octet-stream',
-      'Accept': 'application/octet-stream',
-      'Authorization' : 'Bearer ${_jsonWebTokenDto!.accessToken}'
-    };
-
-    http.Response response = await http.get(
-      Uri.parse(
-        _dio.options.baseUrl + path,
-      ),
-      headers: headers,
-    );
-    if (response.statusCode >= 400 && response.statusCode <= 499) {
-      await _refreshToken();
-      headers['Authorization'] = 'Bearer ${_jsonWebTokenDto!.accessToken}';
-      response = await http.get(
-        Uri.parse(
-          _dio.options.baseUrl + path,
-        ),
-        headers: headers,
       );
     }
     return response;

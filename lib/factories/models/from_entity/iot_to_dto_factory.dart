@@ -1,26 +1,26 @@
-import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/models/group_dto.dart';
 import 'package:deforestation_detection_admin/data/models/iot_dto.dart';
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
 import 'package:deforestation_detection_admin/domain/entities/group.dart';
 import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
+import 'package:deforestation_detection_admin/factories/factory.dart';
 
-class IotFromDtoFactory implements Factory<Iot, IotDto> {
-  final Factory<User, UserDto> _userFactory;
-  final Factory<Group, GroupDto> _groupFactory;
+class IotToDtoFactory implements Factory<IotDto, Iot> {
+  final Factory<UserDto, User> _userFactory;
+  final Factory<GroupDto, Group> _groupFactory;
 
-  IotFromDtoFactory(
+  IotToDtoFactory(
     this._userFactory,
     this._groupFactory,
   );
 
   @override
-  Iot create(IotDto arg) {
-    return Iot(
+  IotDto create(Iot arg) {
+    return IotDto(
       id: arg.id,
-      user: _userFactory.create(arg.userDto ?? UserDto()),
-      group: _groupFactory.create(arg.groupDto ?? GroupDto()),
+      userDto: arg.user != null ? _userFactory.create(arg.user!) : null,
+      groupDto: arg.group != null ? _groupFactory.create(arg.group!) : null,
       longitude: arg.longitude,
       latitude: arg.latitude,
       lastIotChangesTimeUnix: arg.lastIotChangesTimeUnix,

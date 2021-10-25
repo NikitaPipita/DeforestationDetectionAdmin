@@ -3,9 +3,9 @@ import 'package:deforestation_detection_admin/domain/use_cases/group/create_grou
 import 'package:deforestation_detection_admin/domain/use_cases/group/delete_group_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/group/get_groups_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/group/update_group_use_case.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 
 part 'groups_bloc.freezed.dart';
 part 'groups_bloc_event.dart';

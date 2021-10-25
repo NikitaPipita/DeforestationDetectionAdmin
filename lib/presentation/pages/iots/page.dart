@@ -1,5 +1,5 @@
-import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
+import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/iots/iots_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/pages/iots/components/iot_info_dialog.dart';
 import 'package:deforestation_detection_admin/presentation/pages/iots/components/iots_list.dart';

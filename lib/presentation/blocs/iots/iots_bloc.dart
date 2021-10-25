@@ -3,9 +3,9 @@ import 'package:deforestation_detection_admin/domain/use_cases/iot/create_iot_us
 import 'package:deforestation_detection_admin/domain/use_cases/iot/delete_iot_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/iot/get_iots_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/iot/update_iot_use_case.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
 
 part 'iots_bloc.freezed.dart';
 part 'iots_bloc_event.dart';

@@ -1,16 +1,11 @@
-import 'package:deforestation_detection_admin/converters/entities/group_from_dto_factory.dart';
-import 'package:deforestation_detection_admin/converters/entities/iot_from_dto_factory.dart';
-import 'package:deforestation_detection_admin/converters/entities/user_from_dto_factory.dart';
-import 'package:deforestation_detection_admin/converters/factory.dart';
-import 'package:deforestation_detection_admin/converters/models/iot_to_dto_factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_authentication_gateway.dart';
-import 'package:deforestation_detection_admin/data/gateways/api_dumps_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_group_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_iot_gateway.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_provider.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_user_gateway.dart';
 import 'package:deforestation_detection_admin/data/models/group_dto.dart';
 import 'package:deforestation_detection_admin/data/models/iot_dto.dart';
+import 'package:deforestation_detection_admin/data/models/jwt_dto.dart';
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
 import 'package:deforestation_detection_admin/data/repositories/api_group_repository.dart';
 import 'package:deforestation_detection_admin/data/repositories/api_iot_repository.dart';
@@ -36,31 +31,68 @@ import 'package:deforestation_detection_admin/domain/use_cases/user/create_user_
 import 'package:deforestation_detection_admin/domain/use_cases/user/delete_user_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/get_users_use_case.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/user/update_user_use_case.dart';
+import 'package:deforestation_detection_admin/factories/entities/group_from_dto_factory.dart';
+import 'package:deforestation_detection_admin/factories/entities/iot_from_dto_factory.dart';
+import 'package:deforestation_detection_admin/factories/entities/user_from_dto_factory.dart';
+import 'package:deforestation_detection_admin/factories/factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_entity/group_to_dto_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_entity/iot_to_dto_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_entity/user_to_dto_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_json/group_from_json_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_json/iot_from_json_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_json/jwt_from_json_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/from_json/user_from_json_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/to_json/group_to_json_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/to_json/iot_to_json_factory.dart';
+import 'package:deforestation_detection_admin/factories/models/to_json/user_to_json_factory.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/groups/groups_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/iots/iots_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/login/login_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
 import 'package:get_it/get_it.dart';
 
-import 'converters/models/group_to_dto_factory.dart';
-import 'converters/models/user_to_dto_factory.dart';
-
 final GetIt sl = GetIt.instance;
 
 void init() {
-  sl.registerLazySingleton<ApiProvider>(() => ApiProvider());
+  sl.registerLazySingleton<Factory<JsonWebTokenDto, Map<String, dynamic>>>(
+      () => JsonWebTokenDtoFromJsonFactory());
 
+  sl.registerLazySingleton<Factory<UserDto, Map<String, dynamic>>>(
+      () => UserDtoFromJsonFactory());
+  sl.registerLazySingleton<Factory<Map<String, dynamic>, UserDto>>(
+      () => UserToJsonFactory());
+  sl.registerLazySingleton<Factory<UserDto, User>>(() => UserToDtoFactory());
   sl.registerLazySingleton<Factory<User, UserDto>>(() => UserFromDtoFactory());
 
+  sl.registerLazySingleton<Factory<GroupDto, Map<String, dynamic>>>(
+      () => GroupDtoFromJsonFactory(sl.get()));
+  sl.registerLazySingleton<Factory<Map<String, dynamic>, GroupDto>>(
+      () => GroupToJsonFactory());
+  sl.registerLazySingleton<Factory<Group, GroupDto>>(
+      () => GroupFromDtoFactory(sl.get()));
+  sl.registerLazySingleton<Factory<GroupDto, Group>>(
+      () => GroupToDtoFactory(sl.get()));
+
+  sl.registerLazySingleton<Factory<IotDto, Map<String, dynamic>>>(
+      () => IotDtoFromJsonFactory(sl.get(), sl.get()));
+  sl.registerLazySingleton<Factory<Map<String, dynamic>, IotDto>>(
+      () => IotToJsonFactory());
+  sl.registerLazySingleton<Factory<Iot, IotDto>>(
+      () => IotFromDtoFactory(sl.get(), sl.get()));
+  sl.registerLazySingleton<Factory<IotDto, Iot>>(
+      () => IotToDtoFactory(sl.get(), sl.get()));
+
+  sl.registerLazySingleton<ApiProvider>(() => ApiProvider(sl.get()));
+
   sl.registerLazySingleton<ApiAuthenticationGateWay>(
-      () => ApiAuthenticationGateWay(sl.get()));
+      () => ApiAuthenticationGateWay(sl.get(), sl.get()));
   sl.registerLazySingleton<LoginService>(
       () => ApiLoginService(sl.get(), sl.get()));
   sl.registerLazySingleton<LoginUseCase>(() => ApiLoginUseCase(sl.get()));
   sl.registerLazySingleton<LoginBloc>(() => LoginBloc(sl.get()));
 
-  sl.registerLazySingleton<ApiUserGateWay>(() => ApiUserGateWay(sl.get()));
-  sl.registerLazySingleton<Factory<UserDto, User>>(() => UserToDtoFactory());
+  sl.registerLazySingleton<ApiUserGateWay>(
+      () => ApiUserGateWay(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<UserRepository>(
       () => ApiUserRepository(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<GetUsersUseCase>(() => ApiGetUsersUseCase(sl.get()));
@@ -73,11 +105,8 @@ void init() {
   sl.registerLazySingleton<UsersBloc>(
       () => UsersBloc(sl.get(), sl.get(), sl.get(), sl.get()));
 
-  sl.registerLazySingleton<ApiGroupGateWay>(() => ApiGroupGateWay(sl.get()));
-  sl.registerLazySingleton<Factory<Group, GroupDto>>(
-      () => GroupFromDtoFactory(sl.get()));
-  sl.registerLazySingleton<Factory<GroupDto, Group>>(
-      () => GroupToDtoFactory(sl.get()));
+  sl.registerLazySingleton<ApiGroupGateWay>(
+      () => ApiGroupGateWay(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<GroupRepository>(
       () => ApiGroupRepository(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<GetGroupsUseCase>(
@@ -91,11 +120,8 @@ void init() {
   sl.registerLazySingleton<GroupsBloc>(
       () => GroupsBloc(sl.get(), sl.get(), sl.get(), sl.get()));
 
-  sl.registerLazySingleton<ApiIotGateWay>(() => ApiIotGateWay(sl.get()));
-  sl.registerLazySingleton<Factory<Iot, IotDto>>(
-      () => IotFromDtoFactory(sl.get(), sl.get()));
-  sl.registerLazySingleton<Factory<IotDto, Iot>>(
-      () => IotToDtoFactory(sl.get(), sl.get()));
+  sl.registerLazySingleton<ApiIotGateWay>(
+      () => ApiIotGateWay(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<IotRepository>(
       () => ApiIotRepository(sl.get(), sl.get(), sl.get()));
   sl.registerLazySingleton<GetIotsUseCase>(() => ApiGetIotsUseCase(sl.get()));
@@ -107,6 +133,4 @@ void init() {
       () => ApiDeleteIotUseCase(sl.get()));
   sl.registerLazySingleton<IotsBloc>(
       () => IotsBloc(sl.get(), sl.get(), sl.get(), sl.get()));
-
-  sl.registerLazySingleton<ApiDumpsGateway>(() => ApiDumpsGateway(sl.get()));
 }

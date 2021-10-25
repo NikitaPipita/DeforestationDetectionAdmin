@@ -1,7 +1,7 @@
+import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/presentation/blocs/login/login_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/pages/navigation/page.dart';
 import 'package:deforestation_detection_admin/utils/validators.dart';
-import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

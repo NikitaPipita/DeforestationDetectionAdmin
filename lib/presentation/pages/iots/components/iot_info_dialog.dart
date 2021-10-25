@@ -1,9 +1,9 @@
+import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/domain/entities/group.dart';
 import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/groups/groups_bloc.dart';
 import 'package:deforestation_detection_admin/presentation/blocs/users/users_bloc.dart';
-import 'package:deforestation_detection_admin/dependency_injection.dart' as di;
 import 'package:deforestation_detection_admin/presentation/widgets/dropdown_id_menu.dart';
 import 'package:deforestation_detection_admin/presentation/widgets/dropdown_string_menu.dart';
 import 'package:easy_localization/easy_localization.dart';

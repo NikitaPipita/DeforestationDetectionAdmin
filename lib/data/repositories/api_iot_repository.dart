@@ -1,8 +1,8 @@
-import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/gateways/api_iot_gateway.dart';
 import 'package:deforestation_detection_admin/data/models/iot_dto.dart';
 import 'package:deforestation_detection_admin/domain/entities/iot.dart';
 import 'package:deforestation_detection_admin/domain/repositories/iot_repository.dart';
+import 'package:deforestation_detection_admin/factories/factory.dart';
 
 class ApiIotRepository implements IotRepository {
   final ApiIotGateWay _apiIotGateWay;

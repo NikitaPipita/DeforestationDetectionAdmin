@@ -1,16 +1,13 @@
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
 import 'package:deforestation_detection_admin/domain/use_cases/login/login_use_case.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:flutter/foundation.dart';
-
-part 'login_bloc_event.dart';
-
-part 'login_bloc_state.dart';
-
-part 'login_bloc_status.dart';
 
 part 'login_bloc.freezed.dart';
+part 'login_bloc_event.dart';
+part 'login_bloc_state.dart';
+part 'login_bloc_status.dart';
 
 class LoginBloc extends Bloc<LoginBlocEvent, LoginBlocState> {
   final LoginUseCase _loginUseCase;

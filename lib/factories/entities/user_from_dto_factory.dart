@@ -1,6 +1,6 @@
-import 'package:deforestation_detection_admin/converters/factory.dart';
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
 import 'package:deforestation_detection_admin/domain/entities/user.dart';
+import 'package:deforestation_detection_admin/factories/factory.dart';
 
 class UserFromDtoFactory implements Factory<User, UserDto> {
   @override

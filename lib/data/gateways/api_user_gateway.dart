@@ -1,13 +1,18 @@
 import 'package:deforestation_detection_admin/data/models/user_dto.dart';
+import 'package:deforestation_detection_admin/factories/factory.dart';
 import 'package:dio/dio.dart';
 
 import 'api_provider.dart';
 
 class ApiUserGateWay {
   final ApiProvider _apiProvider;
+  final Factory<UserDto, Map<String, dynamic>> _userDtoFromJsonFactory;
+  final Factory<Map<String, dynamic>, UserDto> _userJsonFromDtoFactory;
 
   ApiUserGateWay(
     this._apiProvider,
+    this._userDtoFromJsonFactory,
+    this._userJsonFromDtoFactory,
   );
 
   Future<UserDto> getUser(int id) async {
@@ -15,75 +20,38 @@ class ApiUserGateWay {
       'user/' + id.toString(),
     );
 
-    if (response.statusCode == 200) {
-      return UserDto(
-        id: response.data['user_id'] as int,
-        email: response.data['email'] as String,
-        role: response.data['user_role'] as String,
-        fullName: response.data['full_name'] as String,
-      );
-    } else {
-      throw Exception('Failed to load user id $id.');
-    }
+    return _userDtoFromJsonFactory
+        .create(response.data as Map<String, dynamic>);
   }
 
   Future<List<UserDto>> getUsers() async {
     final Response<dynamic> response =
         await _apiProvider.apiProviderGet('users');
 
-    if (response.statusCode == 200) {
-      final List<dynamic> data = response.data as List<dynamic>;
-      return data
-          .map((dynamic e) => UserDto(
-                id: e['user_id'] as int,
-                email: e['email'] as String,
-                role: e['user_role'] as String,
-                fullName: e['full_name'] as String,
-              ))
-          .toList();
-    } else {
-      throw Exception('Failed to load users.');
-    }
+    final List<dynamic> data = response.data as List<dynamic>;
+    return data
+        .map((dynamic e) =>
+            _userDtoFromJsonFactory.create(e as Map<String, dynamic>))
+        .toList();
   }
 
-  Future<void> createUser(UserDto userDto) async {
-    final Response<dynamic> response = await _apiProvider.apiProviderPost(
-      'users',
-      data: <String, dynamic>{
-        'email': userDto.email!,
-        'password': userDto.password!,
-        'user_role': userDto.role!,
-        'full_name': userDto.fullName!,
-      },
-    );
-
-    if (response.statusCode != 201) {
-      throw Exception('Failed to create user.');
-    }
-  }
+  Future<void> createUser(UserDto userDto) => _apiProvider.apiProviderPost(
+        'users',
+        data: _userJsonFromDtoFactory.create(userDto),
+      );
 
   Future<void> updateUser(UserDto userDto) async {
-    final Response<dynamic> response = await _apiProvider.apiProviderPut(
+    if (userDto.id == null) {
+      throw NullableIdException(
+          'UserDto id must not be nullable in update data method');
+    }
+
+    await _apiProvider.apiProviderPut(
       'user/' + userDto.id.toString(),
-      data: <String, dynamic>{
-        'email': userDto.email!,
-        'user_role': userDto.role!,
-        'full_name': userDto.fullName!,
-      },
+      data: _userJsonFromDtoFactory.create(userDto),
     );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update user id ${userDto.id}.');
-    }
   }
 
-  Future<void> deleteUser(int id) async {
-    final Response<dynamic> response = await _apiProvider.apiProviderDelete(
-      'user/' + id.toString(),
-    );
-
-    if (response.statusCode != 204) {
-      throw Exception('Failed to delete user id $id.');
-    }
-  }
+  Future<void> deleteUser(int id) =>
+      _apiProvider.apiProviderDelete('user/' + id.toString());
 }
